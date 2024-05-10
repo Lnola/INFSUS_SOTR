@@ -6,7 +6,8 @@
     "format": "prettier --write .",
     "format:staged": "pretty-quick --staged",
     "lint:server": "(cd ./server && npm run lint)",
-    "lint": "npm run lint:server"
+    "lint": "npm run lint:server",
+    "lint:staged": "npx lint-staged"
   },
   "author": "",
   "license": "ISC",
