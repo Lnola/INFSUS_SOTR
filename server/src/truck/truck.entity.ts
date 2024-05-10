@@ -1,4 +1,5 @@
-import { Entity, Property } from '@mikro-orm/core';
+import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
+import Order from 'order/order.entity';
 import TransportVehicle from 'transport-vehicle/transport-vehicle';
 
 @Entity({ tableName: 'truck' })
@@ -8,6 +9,15 @@ class Truck extends TransportVehicle {
 
   @Property({ nullable: true })
   horsepower: number;
+
+  // TODO: decide if it needs to be private and eager
+  @OneToMany({
+    entity: () => Order,
+    mappedBy: (it: Order) => it.truck,
+    orphanRemoval: true,
+    eager: false,
+  })
+  _orders = new Collection<Order>(this);
 
   constructor(registration: string, productionYear: string, tankCapacity: number, horsepower?: number) {
     super(registration, productionYear);
