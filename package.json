@@ -2,7 +2,9 @@
   "name": "infsus-sotr",
   "version": "0.0.1",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier --write .",
+    "format:staged": "pretty-quick --staged"
   },
   "author": "",
   "license": "ISC",
