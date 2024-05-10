@@ -15,6 +15,7 @@ const databaseConfig = registerAs('database', () => ({
     fileName: (timestamp: string) => `${timestamp}-new-migration`,
   },
 }));
+export default databaseConfig;
 
 export const DbConfigModule = ConfigModule.forRoot({
   load: [databaseConfig],
