@@ -8,17 +8,17 @@ export class CreateOrder extends Migration {
 
     const createOrderTable = knex.schema.createTable(TABLE_NAME, table => {
       table.increments('id');
-      table.string('serialNumber').notNullable().unique();
-      table.decimal('transportPrice').notNullable();
+      table.string('serial_number').notNullable().unique();
+      table.decimal('transport_price').notNullable();
       table.decimal('distance').notNullable();
-      table.integer('truckId').notNullable();
-      table.foreign('truckId').references('id').inTable('truck');
-      table.integer('trailerId').notNullable();
-      table.foreign('trailerId').references('id').inTable('trailer');
-      table.integer('companyId').notNullable();
-      table.foreign('companyId').references('id').inTable('company');
-      table.integer('statusId').notNullable();
-      table.foreign('statusId').references('id').inTable('order_status');
+      table.integer('truck_id').notNullable();
+      table.foreign('truck_id').references('id').inTable('truck');
+      table.integer('trailer_id').notNullable();
+      table.foreign('trailer_id').references('id').inTable('trailer');
+      table.integer('company_id').notNullable();
+      table.foreign('company_id').references('id').inTable('company');
+      table.integer('status_id').notNullable();
+      table.foreign('status_id').references('id').inTable('order_status');
     });
 
     this.addSql(createOrderTable.toQuery());

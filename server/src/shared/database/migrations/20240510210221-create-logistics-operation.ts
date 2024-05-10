@@ -9,14 +9,14 @@ export class CreateLogisticsOperation extends Migration {
     const createLogisticsOperationTable = knex.schema.createTable(TABLE_NAME, table => {
       table.increments('id');
       table.timestamp('date').notNullable();
-      table.boolean('isCompleted').notNullable();
+      table.boolean('is_completed').notNullable();
       table.text('note');
-      table.integer('companyLocationId').notNullable();
-      table.foreign('companyLocationId').references('id').inTable('company_location');
-      table.integer('typeId').notNullable();
-      table.foreign('typeId').references('id').inTable('logistics_operation_type');
-      table.integer('orderId').notNullable();
-      table.foreign('orderId').references('id').inTable('order');
+      table.integer('company_location_id').notNullable();
+      table.foreign('company_location_id').references('id').inTable('company_location');
+      table.integer('type_id').notNullable();
+      table.foreign('type_id').references('id').inTable('logistics_operation_type');
+      table.integer('order_id').notNullable();
+      table.foreign('order_id').references('id').inTable('order');
     });
 
     this.addSql(createLogisticsOperationTable.toQuery());

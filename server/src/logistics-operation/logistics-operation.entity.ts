@@ -15,13 +15,13 @@ class LogisticsOperation extends BaseEntity {
   @Property({ nullable: true })
   note: string;
 
-  @ManyToOne({ entity: () => CompanyLocation, fieldName: 'companyLocationId' })
+  @ManyToOne({ entity: () => CompanyLocation, fieldName: 'company_location_id' })
   companyLocation: CompanyLocation;
 
-  @ManyToOne({ entity: () => LogisticsOperationType, fieldName: 'typeId' })
+  @ManyToOne({ entity: () => LogisticsOperationType, fieldName: 'type_id' })
   type: LogisticsOperationType;
 
-  @ManyToOne({ entity: () => Order, fieldName: 'orderId' })
+  @ManyToOne({ entity: () => Order, fieldName: 'order_id' })
   order: Order;
 
   constructor(

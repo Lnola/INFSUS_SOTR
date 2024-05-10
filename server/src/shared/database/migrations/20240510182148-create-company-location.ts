@@ -13,8 +13,8 @@ export class CreateCompanyLocation extends Migration {
       table.string('city').notNullable();
       table.string('country').notNullable();
       table.string('name').notNullable().unique();
-      table.integer('companyId').notNullable();
-      table.foreign('companyId').references('id').inTable('company');
+      table.integer('company_id').notNullable();
+      table.foreign('company_id').references('id').inTable('company');
     });
 
     this.addSql(createCompanyLocationTable.toQuery());

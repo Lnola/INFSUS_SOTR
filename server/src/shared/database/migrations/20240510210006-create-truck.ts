@@ -9,8 +9,8 @@ export class CreateTruck extends Migration {
     const createTruckTable = knex.schema.createTable(TABLE_NAME, table => {
       table.increments('id');
       table.string('registration').notNullable().unique();
-      table.string('productionYear');
-      table.decimal('tankCapacity').notNullable();
+      table.string('production_year');
+      table.decimal('tank_capacity').notNullable();
       table.integer('horsepower');
     });
 

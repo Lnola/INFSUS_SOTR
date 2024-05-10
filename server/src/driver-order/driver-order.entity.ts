@@ -5,10 +5,10 @@ import BaseEntity from 'shared/database/base.entity';
 
 @Entity({ tableName: 'driver_order' })
 class DriverOrder extends BaseEntity {
-  @ManyToOne({ entity: () => Driver, fieldName: 'driverId' })
+  @ManyToOne({ entity: () => Driver, fieldName: 'driver_id' })
   driver: Driver;
 
-  @ManyToOne({ entity: () => Order, fieldName: 'orderId' })
+  @ManyToOne({ entity: () => Order, fieldName: 'order_id' })
   order: Order;
 
   constructor(driver: Driver, order: Order) {

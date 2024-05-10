@@ -8,11 +8,11 @@ export class CreateDriver extends Migration {
 
     const createDriverTable = knex.schema.createTable(TABLE_NAME, table => {
       table.increments('id');
-      table.string('firstName').notNullable();
-      table.string('lastName').notNullable();
-      table.string('contactNumber').notNullable().unique();
-      table.date('employmentStartDate').notNullable();
-      table.date('employmentEndDate').nullable();
+      table.string('first_name').notNullable();
+      table.string('last_name').notNullable();
+      table.string('contact_number').notNullable().unique();
+      table.date('employment_start_date').notNullable();
+      table.date('employment_end_date').nullable();
     });
 
     this.addSql(createDriverTable.toQuery());

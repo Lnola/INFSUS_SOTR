@@ -9,8 +9,8 @@ export class CreateTrailer extends Migration {
     const createTrailerTable = knex.schema.createTable(TABLE_NAME, table => {
       table.increments('id');
       table.string('registration').notNullable().unique();
-      table.string('productionYear');
-      table.integer('palletCapacity').notNullable();
+      table.string('production_year');
+      table.integer('pallet_capacity').notNullable();
       table.decimal('length');
     });
 
