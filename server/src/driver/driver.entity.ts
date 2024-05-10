@@ -1,7 +1,7 @@
 import { Entity, Property, Unique } from '@mikro-orm/core';
 import BaseEntity from 'shared/database/base.entity';
 
-@Entity({ tableName: 'Driver' })
+@Entity({ tableName: 'driver' })
 class Driver extends BaseEntity {
   @Property()
   firstName: string;
