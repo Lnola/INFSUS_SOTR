@@ -15,7 +15,7 @@ class Company extends BaseEntity {
   // TODO: decide if it needs to be private and eager
   @OneToMany({
     entity: () => Order,
-    mappedBy: (it: Order) => it.company,
+    mappedBy: (it: Order) => it.financer,
     orphanRemoval: true,
     eager: false,
   })
