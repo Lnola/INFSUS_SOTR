@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import databaseConfig from 'config/database.config';
 import { HealthController } from 'health.controller';
 import { DatabaseModule } from 'shared/database/database.module';
-import { OrmModule } from 'shared/database/mikro-orm.module';
 
 @Module({
-  imports: [DatabaseModule, OrmModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [databaseConfig],
+    }),
+    DatabaseModule,
+  ],
   controllers: [HealthController],
 })
 export class AppModule {}
