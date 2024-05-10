@@ -1,7 +1,7 @@
 import { Entity, Property, Unique, ManyToOne, OneToMany, Collection } from '@mikro-orm/core';
 import Company from 'company/entities/company.entity';
 import DriverOrder from 'driver-order/entities/driver-order.entity';
-import LogisticsOperation from 'logistics-operation/logistics-operation.entity';
+import LogisticsOperation from 'logistics-operation/entities/logistics-operation.entity';
 import BaseEntity from 'shared/database/base.entity';
 import Trailer from 'trailer/entities/trailer.entity';
 import Truck from 'truck/entities/truck.entity';
