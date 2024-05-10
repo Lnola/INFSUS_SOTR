@@ -2,6 +2,7 @@ import type { EntityManager } from '@mikro-orm/postgresql';
 import { Seeder } from '@mikro-orm/seeder';
 import { CompanyLocationSeeder } from './company-location.seeder';
 import { CompanySeeder } from './company.seeder';
+import { DriverOrderSeeder } from './driver-order.seeder';
 import { DriverSeeder } from './driver.seeder';
 import { LogisticsOperationSeeder } from './logistics-operation.seeder';
 import { OrderSeeder } from './order.seeder';
@@ -18,6 +19,7 @@ export class DatabaseSeeder extends Seeder {
       TrailerSeeder,
       OrderSeeder,
       LogisticsOperationSeeder,
+      DriverOrderSeeder,
     ]);
   }
 }
