@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
-import { DbConfigModule } from 'config/database.config';
+import { HealthController } from 'health.controller';
+import { DatabaseModule } from 'shared/database/database.module';
+import { OrmModule } from 'shared/database/mikro-orm.module';
 
 @Module({
-  imports: [DbConfigModule],
+  imports: [DatabaseModule, OrmModule],
+  controllers: [HealthController],
 })
 export class AppModule {}
