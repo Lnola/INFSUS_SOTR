@@ -7,7 +7,6 @@ export const DatabaseModule = MikroOrmModule.forRootAsync({
   useFactory: (config: ConfigService) => {
     return {
       ...config.get('database'),
-      autoLoadEntities: true,
     };
   },
 });
