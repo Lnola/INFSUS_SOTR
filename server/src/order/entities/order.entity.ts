@@ -1,10 +1,10 @@
 import { Entity, Property, Unique, ManyToOne, OneToMany, Collection } from '@mikro-orm/core';
-import Company from 'company/company.entity';
-import DriverOrder from 'driver-order/driver-order.entity';
+import Company from 'company/entities/company.entity';
+import DriverOrder from 'driver-order/entities/driver-order.entity';
 import LogisticsOperation from 'logistics-operation/logistics-operation.entity';
 import BaseEntity from 'shared/database/base.entity';
-import Trailer from 'trailer/trailer.entity';
-import Truck from 'truck/truck.entity';
+import Trailer from 'trailer/entities/trailer.entity';
+import Truck from 'truck/entities/truck.entity';
 import OrderStatus from './order-status.entity';
 
 @Entity({ tableName: 'order' })

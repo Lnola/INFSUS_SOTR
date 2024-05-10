@@ -1,6 +1,6 @@
 import { Entity, ManyToOne } from '@mikro-orm/core';
-import Driver from 'driver/driver.entity';
-import Order from 'order/order.entity';
+import Driver from 'driver/entities/driver.entity';
+import Order from 'order/entities/order.entity';
 import BaseEntity from 'shared/database/base.entity';
 
 @Entity({ tableName: 'driver_order' })

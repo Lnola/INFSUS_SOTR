@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import Truck from 'truck/truck.entity';
+import Truck from 'truck/entities/truck.entity';
 
 export class TruckSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {

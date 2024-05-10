@@ -1,5 +1,5 @@
 import { Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core';
-import DriverOrder from 'driver-order/driver-order.entity';
+import DriverOrder from 'driver-order/entities/driver-order.entity';
 import BaseEntity from 'shared/database/base.entity';
 
 @Entity({ tableName: 'driver' })

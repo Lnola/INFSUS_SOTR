@@ -1,10 +1,10 @@
 import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import Company from 'company/company.entity';
-import OrderStatus from 'order/order-status.entity';
-import Order from 'order/order.entity';
-import Trailer from 'trailer/trailer.entity';
-import Truck from 'truck/truck.entity';
+import Company from 'company/entities/company.entity';
+import OrderStatus from 'order/entities/order-status.entity';
+import Order from 'order/entities/order.entity';
+import Trailer from 'trailer/entities/trailer.entity';
+import Truck from 'truck/entities/truck.entity';
 
 export class OrderSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {

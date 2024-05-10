@@ -1,5 +1,5 @@
 import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
-import Order from 'order/order.entity';
+import Order from 'order/entities/order.entity';
 import TransportVehicle from 'transport-vehicle/transport-vehicle';
 
 @Entity({ tableName: 'trailer' })

@@ -1,6 +1,6 @@
 import { Entity, Property, ManyToOne } from '@mikro-orm/core';
 import CompanyLocation from 'company-location/entities/company-location.entity';
-import Order from 'order/order.entity';
+import Order from 'order/entities/order.entity';
 import BaseEntity from 'shared/database/base.entity';
 import LogisticsOperationType from './logistics-operation-type.entity';
 

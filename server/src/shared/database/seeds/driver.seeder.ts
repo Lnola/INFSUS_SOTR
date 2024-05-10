@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import Driver from 'driver/driver.entity';
+import Driver from 'driver/entities/driver.entity';
 
 export class DriverSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {

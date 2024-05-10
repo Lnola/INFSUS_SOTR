@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import Company from 'company/company.entity';
+import Company from 'company/entities/company.entity';
 
 export class CompanySeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {

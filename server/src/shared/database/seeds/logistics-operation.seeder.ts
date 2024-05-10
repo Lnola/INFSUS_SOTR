@@ -3,7 +3,7 @@ import { Seeder } from '@mikro-orm/seeder';
 import CompanyLocation from 'company-location/entities/company-location.entity';
 import LogisticsOperationType from 'logistics-operation/logistics-operation-type.entity';
 import LogisticsOperation from 'logistics-operation/logistics-operation.entity';
-import Order from 'order/order.entity';
+import Order from 'order/entities/order.entity';
 
 export class LogisticsOperationSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {

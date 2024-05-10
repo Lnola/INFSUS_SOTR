@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import Company from 'company/company.entity';
+import Company from 'company/entities/company.entity';
 import CompanyLocation from 'company-location/entities/company-location.entity';
 
 export class CompanyLocationSeeder extends Seeder {
