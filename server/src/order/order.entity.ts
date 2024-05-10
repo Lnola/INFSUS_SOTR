@@ -19,16 +19,16 @@ class Order extends BaseEntity {
   @Property()
   distance: number;
 
-  @ManyToOne(() => Truck)
+  @ManyToOne({ entity: () => Truck, fieldName: 'truckId' })
   truck: Truck;
 
-  @ManyToOne(() => Trailer)
+  @ManyToOne({ entity: () => Trailer, fieldName: 'trailerId' })
   trailer: Trailer;
 
-  @ManyToOne(() => Company)
+  @ManyToOne({ entity: () => Company, fieldName: 'companyId' })
   financer: Company;
 
-  @ManyToOne(() => OrderStatus)
+  @ManyToOne({ entity: () => OrderStatus, fieldName: 'statusId' })
   status: OrderStatus;
 
   // TODO: decide if it needs to be private and eager

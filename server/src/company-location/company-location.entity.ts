@@ -21,7 +21,7 @@ class CompanyLocation extends BaseEntity {
   @Unique()
   name: string;
 
-  @ManyToOne(() => Company)
+  @ManyToOne({ entity: () => Company, fieldName: 'companyId' })
   company: Company;
 
   // TODO: decide if it needs to be private and eager
