@@ -4,7 +4,9 @@
   "scripts": {
     "prepare": "husky install",
     "format": "prettier --write .",
-    "format:staged": "pretty-quick --staged"
+    "format:staged": "pretty-quick --staged",
+    "lint:server": "(cd ./server && npm run lint)",
+    "lint": "npm run lint:server"
   },
   "author": "",
   "license": "ISC",
