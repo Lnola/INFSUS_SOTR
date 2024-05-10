@@ -1,6 +1,6 @@
 import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
 import Order from 'order/entities/order.entity';
-import TransportVehicle from 'transport-vehicle/transport-vehicle';
+import TransportVehicle from 'shared/models/transport-vehicle/transport-vehicle';
 
 @Entity({ tableName: 'trailer' })
 class Trailer extends TransportVehicle {
