@@ -1,5 +1,5 @@
 import { Collection, Entity, OneToMany, Property, Unique } from '@mikro-orm/core';
-import CompanyLocation from 'company-location/company-location.entity';
+import CompanyLocation from 'company-location/entities/company-location.entity';
 import Order from 'order/order.entity';
 import BaseEntity from 'shared/database/base.entity';
 

@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import CompanyLocation from 'company-location/company-location.entity';
+import CompanyLocation from 'company-location/entities/company-location.entity';
 import LogisticsOperationType from 'logistics-operation/logistics-operation-type.entity';
 import LogisticsOperation from 'logistics-operation/logistics-operation.entity';
 import Order from 'order/order.entity';
