@@ -26,7 +26,7 @@ class Order extends BaseEntity {
   trailer: Trailer;
 
   @ManyToOne(() => Company)
-  company: Company;
+  financer: Company;
 
   @ManyToOne(() => OrderStatus)
   status: OrderStatus;
@@ -55,7 +55,7 @@ class Order extends BaseEntity {
     distance: number,
     truck: Truck,
     trailer: Trailer,
-    company: Company,
+    financer: Company,
     status: OrderStatus,
   ) {
     super();
@@ -64,7 +64,7 @@ class Order extends BaseEntity {
     this.distance = distance;
     this.truck = truck;
     this.trailer = trailer;
-    this.company = company;
+    this.financer = financer;
     this.status = status;
   }
 }
