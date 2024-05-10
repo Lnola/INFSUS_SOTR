@@ -24,6 +24,7 @@ export default registerAs('database', () => {
       pathTs: `${process.cwd()}/src/shared/database/seeds`,
       fileName: (className: string) => dash(className),
     },
+    entities: [`${process.cwd()}/dist/**/*.entity.js`],
     extensions: [Migrator, SeedManager],
   });
 
