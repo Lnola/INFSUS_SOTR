@@ -1,0 +1,12 @@
+{
+  "name": "infsus-sotr",
+  "version": "0.0.1",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}
