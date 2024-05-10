@@ -1,9 +1,7 @@
-import databaseConfig from 'config/database.config';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import 'dotenv/config.js';
+import databaseConfig from './config/database.config';
 
 export default {
   ...databaseConfig(),
-  entities: [`${__dirname}/**/entities/*.ts`],
+  entities: ['**/*.entity.ts'],
 };
