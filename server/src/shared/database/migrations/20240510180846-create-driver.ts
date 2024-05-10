@@ -2,7 +2,7 @@ import { Migration } from '@mikro-orm/migrations';
 
 const TABLE_NAME = 'driver';
 
-export class CreateDriverTable extends Migration {
+export class CreateDriver extends Migration {
   async up(): Promise<void> {
     const knex = this.getKnex();
 
