@@ -1,6 +1,13 @@
-import { ConfigModule } from '@nestjs/config';
-import databaseConfig from 'config/database.config';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-export const DatabaseModule = ConfigModule.forRoot({
-  load: [databaseConfig],
+export const DatabaseModule = MikroOrmModule.forRootAsync({
+  imports: [ConfigModule],
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => {
+    return {
+      ...config.get('database'),
+      autoLoadEntities: true,
+    };
+  },
 });
