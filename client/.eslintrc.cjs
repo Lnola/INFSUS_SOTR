@@ -7,6 +7,7 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    // TODO: extract these to the root
     'no-console': 'warn',
     'import/order': [
       'error',
