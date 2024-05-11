@@ -7,5 +7,14 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'no-console': 'warn',
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        'newlines-between': 'never',
+        alphabetize: { order: 'asc', caseInsensitive: true },
+      },
+    ],
   },
 };
