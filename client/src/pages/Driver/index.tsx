@@ -1,8 +1,8 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import useFetch from 'react-fetch-hook';
 import { driverUrls } from '@/api';
 import Error from '@/components/common/Error';
 import Loading from '@/components/common/Loading';
+import { useGet } from '@/hooks/useGet';
 
 type Driver = {
   id: number;
@@ -23,7 +23,7 @@ const columns: GridColDef[] = [
 ];
 
 const DriverList = () => {
-  const { isLoading, data: drivers, error } = useFetch<Driver[]>(driverUrls.getAll);
+  const { data: drivers, isLoading, error } = useGet<Driver[]>({ path: driverUrls.getAll });
 
   if (error) return <Error error={error} />;
   if (isLoading) return <Loading />;
