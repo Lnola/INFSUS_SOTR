@@ -9,17 +9,12 @@ const StyledFullScreen = styled.div`
   width: 100vw;
 `;
 
-type Props = {
-  isLoading: boolean;
-};
-
-const Loading = ({ isLoading }: Props) => {
-  if (isLoading)
-    return (
-      <StyledFullScreen>
-        <CircularProgress />
-      </StyledFullScreen>
-    );
+const Loading = () => {
+  return (
+    <StyledFullScreen>
+      <CircularProgress />
+    </StyledFullScreen>
+  );
   return <></>;
 };
 

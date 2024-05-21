@@ -24,7 +24,7 @@ const columns: GridColDef[] = [
 const DriverList = () => {
   const { isLoading, data: drivers } = useFetch<Driver[]>(driverUrls.getAll);
 
-  if (isLoading) return <Loading isLoading={isLoading} />;
+  if (isLoading) return <Loading />;
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
