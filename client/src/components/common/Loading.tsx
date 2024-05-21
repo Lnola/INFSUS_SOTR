@@ -15,7 +15,6 @@ const Loading = () => {
       <CircularProgress />
     </StyledFullScreen>
   );
-  return <></>;
 };
 
 export default Loading;
