@@ -15,9 +15,13 @@ export class PaginationParams {
   static get default() {
     return { page: '1', pageSize: '10' };
   }
+
+  extractParams() {
+    return { page: this.page, pageSize: this.pageSize };
+  }
 }
 
-export const Pagination = createParamDecorator(async (_: unknown, ctx: ExecutionContext) => {
+const Pagination = createParamDecorator(async (_: unknown, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest();
   request.query = { ...PaginationParams.default, ...request.query };
   const pagination = plainToClass(PaginationParams, request.query);
@@ -28,8 +32,7 @@ export const Pagination = createParamDecorator(async (_: unknown, ctx: Execution
     throw new BadRequestException(error);
   }
 
-  const { page, pageSize } = pagination;
-  return { page, pageSize };
+  return pagination.extractParams();
 });
 
 export default Pagination;
