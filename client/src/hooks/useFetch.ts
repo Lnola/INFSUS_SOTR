@@ -20,7 +20,7 @@ type Props = BaseProps & ConditionalProps;
 export type FetchReturn<T> = {
   data: T | undefined;
   isLoading: boolean;
-  refresh: () => void;
+  refetch: () => void;
   error: Error | null;
 };
 
@@ -69,11 +69,11 @@ function useFetch<T>({ path, method, data, query }: Props): FetchReturn<T> {
     fetchEnsureSingleActive();
   }, [fetchEnsureSingleActive]);
 
-  const refresh = () => {
+  const refetch = () => {
     fetchEnsureSingleActive();
   };
 
-  return { data: result, isLoading, error, refresh };
+  return { data: result, isLoading, error, refetch };
 }
 
 export default useFetch;
