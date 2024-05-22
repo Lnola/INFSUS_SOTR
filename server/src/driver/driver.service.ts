@@ -1,6 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
+import { PaginationParams } from 'shared/decorators/pagination.decorator';
 import Driver from './entities/driver.entity';
 
 @Injectable()
@@ -10,8 +11,12 @@ export class DriverService {
     private driverRepository: EntityRepository<Driver>,
   ) {}
 
-  findAll() {
-    return this.driverRepository.findAll();
+  find({ page, pageSize }: PaginationParams) {
+    const paginationOptions = {
+      offset: (page - 1) * pageSize,
+      limit: pageSize,
+    };
+    return this.driverRepository.findAndCount({}, paginationOptions);
   }
 
   findOne(id: number) {

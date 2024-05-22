@@ -7,9 +7,8 @@ export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 
   @Get()
-  async findAll(@Pagination() pagination: PaginationParams) {
-    console.log('Pagination:', pagination);
-    return this.driverService.findAll();
+  async find(@Pagination() pagination: PaginationParams) {
+    return this.driverService.find(pagination);
   }
 
   @Get(':id')
