@@ -1,14 +1,12 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { PaginationParams } from './usePagination';
 
-type Method = 'GET' | 'POST' | 'DELETE' | 'PUT';
 type MethodLowercase = 'get' | 'post' | 'delete' | 'put';
 export type BaseProps = {
   path: string;
-  query?: object;
+  query?: object & PaginationParams;
 };
-export type Query = object[] & PaginationParams;
 export type GetProps = {
   method: 'GET';
   data?: never;
@@ -37,7 +35,8 @@ function useFetch<T>({ path, method, data, query }: Props): FetchReturn<T> {
     const request = axios.create(config);
 
     const lowercaseMethod = method.toLowerCase() as MethodLowercase;
-    return await request[lowercaseMethod](path, data);
+    return await request[lowercaseMethod](path, { params: { ...data, ...query } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, method, path]);
 
   const fetchAndFormat = useCallback(async () => {
