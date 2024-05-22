@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
+import { PaginationParams } from './usePagination';
 
 export type BaseProps = {
   path: string;
+  query?: object;
 };
+export type Query = object[] & PaginationParams;
 export type GetProps = {
   method: 'GET';
   data?: never;
@@ -20,7 +23,7 @@ export type FetchReturn<T> = {
   error: Error | null;
 };
 
-function useFetch<T>({ path, method, data }: Props): FetchReturn<T> {
+function useFetch<T>({ path, method, data, query }: Props): FetchReturn<T> {
   const [result, setResult] = useState<T>();
   const [isLoading, setIsLoading] = useState(true);
   const [internalLoading, setInternalLoading] = useState<boolean>(false);
