@@ -13,10 +13,15 @@ class PaginationParams {
   @IsNumberString()
   @IsOptional()
   pageSize?: number;
+
+  static get default() {
+    return { page: '1', pageSize: '10' };
+  }
 }
 
 export const Pagination = createParamDecorator(async (_: unknown, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest();
+  request.query = { ...PaginationParams.default, ...request.query };
   const pagination = plainToClass(PaginationParams, request.query);
 
   try {
