@@ -16,7 +16,7 @@ export class DriverService {
       offset: (page - 1) * pageSize,
       limit: pageSize,
     };
-    return this.driverRepository.findAndCount({}, paginationOptions);
+    return this.driverRepository.find({}, paginationOptions);
   }
 
   findOne(id: number) {
