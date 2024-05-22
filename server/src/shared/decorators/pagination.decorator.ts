@@ -17,7 +17,7 @@ export class PaginationParams {
   }
 
   extractParams() {
-    return { page: this.page, pageSize: this.pageSize };
+    return { page: +this.page, pageSize: +this.pageSize };
   }
 }
 
