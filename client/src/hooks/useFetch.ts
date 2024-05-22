@@ -1,6 +1,9 @@
+import axios, { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { PaginationParams } from './usePagination';
 
+type Method = 'GET' | 'POST' | 'DELETE' | 'PUT';
+type MethodLowercase = 'get' | 'post' | 'delete' | 'put';
 export type BaseProps = {
   path: string;
   query?: object;
@@ -30,23 +33,23 @@ function useFetch<T>({ path, method, data, query }: Props): FetchReturn<T> {
   const [error, setError] = useState<Error | null>(null);
 
   const fetchData = useCallback(async () => {
-    const response = await fetch(path, {
-      headers: data === undefined ? {} : { 'Content-Type': 'application/json' },
-      body: data === undefined ? null : JSON.stringify(data),
-      method,
-    });
-    return response;
+    const config = { headers: { 'Content-Type': 'application/json' } };
+    const request = axios.create(config);
+
+    const lowercaseMethod = method.toLowerCase() as MethodLowercase;
+    return await request[lowercaseMethod](path, data);
   }, [data, method, path]);
 
   const fetchAndFormat = useCallback(async () => {
     try {
       const response = await fetchData();
-      const data = JSON.parse(await response.text());
-      if (!response.ok) throw new Error(data.message);
+      const data = await response.data;
       setResult(data);
       setError(null);
     } catch (error) {
-      setError(error as Error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const axiosError = error as any;
+      setError(axiosError.response?.data || axiosError);
     } finally {
       setIsLoading(false);
       setInternalLoading(false);
