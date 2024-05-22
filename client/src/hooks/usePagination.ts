@@ -6,7 +6,7 @@ export type PaginationParams = {
 };
 
 const usePagination = () => {
-  const [paginationParams, setPaginationParams] = useState({});
+  const [paginationParams, setPaginationParams] = useState<PaginationParams>({ page: 0, pageSize: 1 });
 
   const handlePaginationModelChange = (params: PaginationParams) => {
     setPaginationParams(params);
