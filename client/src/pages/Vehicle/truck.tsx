@@ -1,13 +1,13 @@
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-const EditButton = ({ id }: { id: number }) => {
+const EditButton = ({ id, setShowEditModal, setEditTruckId }: { id: number; setShowEditModal: (show: boolean) => void; setEditTruckId: (editId: number) => void}) => {
   return (
-    <button style={{height: 'min-content'}} onClick={() => console.log(`Edit ${id}`)}>Edit</button>
+    <button style={{height: 'min-content'}} onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit {id}</button>
   )
 }
 
@@ -24,30 +24,6 @@ type Truck = {
   reservoarCapacity: number;
   horsepower: number;
 };
-
-const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'registration', headerName: 'Registration', width: 130 },
-  { field: 'makeYear', headerName: 'Make year', type: 'number', width: 80 },
-  { field: 'reservoarCapacity', headerName: 'Reservoar', type: 'number', width: 90,},
-  { field: 'horsepower', headerName: 'Horsepower', type: 'number', width: 90,},
-  {
-    field: 'edit',
-    headerName: 'Edit truck',
-    width: 120,
-    renderCell: (params) => <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
-    <EditButton id={params.row.id} />
-  </div>,
-  },
-  {
-    field: 'delete',
-    headerName: 'Delete truck',
-    width: 120,
-    renderCell: (params) => <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
-    <DeleteButton id={params.row.id} />
-  </div>,
-  },
-];
 
 const DUMMY_TRUCKS: Truck[] = [
   { id: 1, registration: 'VŽ-393-OL', makeYear: '2019', reservoarCapacity: 1420, horsepower: 480},
@@ -66,6 +42,40 @@ const DUMMY_TRUCKS: Truck[] = [
 const TruckList = () => {
   const [alignment, setAlignment] = React.useState('web');
   const navigate = useNavigate();
+  const [trucks, setTrucks] = useState<Truck[]>([]);
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [editTruckId, setEditTruckId] = useState<number | null>(null)
+
+  const columns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'registration', headerName: 'Registration', width: 130 },
+    { field: 'makeYear', headerName: 'Make year', type: 'number', width: 80 },
+    { field: 'reservoarCapacity', headerName: 'Reservoar', type: 'number', width: 90,},
+    { field: 'horsepower', headerName: 'Horsepower', type: 'number', width: 90,},
+    {
+      field: 'edit',
+      headerName: 'Edit truck',
+      width: 120,
+      renderCell: (params) => <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
+      <EditButton id={params.row.id} setShowEditModal={setShowEditModal} setEditTruckId={setEditTruckId}/>
+    </div>,
+    },
+    {
+      field: 'delete',
+      headerName: 'Delete truck',
+      width: 120,
+      renderCell: (params) => <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+      <DeleteButton id={params.row.id} />
+    </div>,
+    },
+  ];
+
+  // Fetch mock function
+  useEffect(() => {
+    setTimeout(() => {
+      setTrucks(DUMMY_TRUCKS);
+    }, 1000);
+  }, []);
 
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -75,6 +85,7 @@ const TruckList = () => {
   };
   return (
     <>
+      {/* toggle buttons */}
       <div style={{display: 'flex', justifyContent: 'center', margin: '30px'}}>
         <ToggleButtonGroup
           color="primary"
@@ -88,10 +99,11 @@ const TruckList = () => {
         </ToggleButtonGroup>
       </div>
 
+      {/* Data Table */}
       <div style={{ minHeight: '50%', display: 'flex', justifyContent: 'center'}}>
-        <div style={{margin: '20px', minWidth: '80%'}}>
+        <div style={{margin: '20px', maxWidth: '80%'}}>
           <DataGrid
-            rows={DUMMY_TRUCKS}
+            rows={trucks}
             columns={columns}
             disableRowSelectionOnClick
             initialState={{
@@ -102,6 +114,9 @@ const TruckList = () => {
             pageSizeOptions={[5, 10]}
           />
         </div>
+
+        {/* Edit Modal */}
+        {showEditModal && <p>EDITING TRUCK: {editTruckId}</p>}
       </div>
     </>
   );
