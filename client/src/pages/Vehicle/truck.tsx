@@ -1,4 +1,9 @@
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 type Truck = {
   id: number;
@@ -22,24 +27,55 @@ const DUMMY_TRUCKS: Truck[] = [
   { id: 3, registration: 'VŽ-996-GF', makeYear: '2017', reservoarCapacity: 1350, horsepower: 410 },
   { id: 4, registration: 'VŽ-402-UU', makeYear: '2023', reservoarCapacity: 1330, horsepower: 450 },
   { id: 5, registration: 'VŽ-252-RR', makeYear: '2022', reservoarCapacity: 1500, horsepower: 520 },
+  { id: 6, registration: 'VŽ-393-OL', makeYear: '2019', reservoarCapacity: 1420, horsepower: 480 },
+  { id: 7, registration: 'VŽ-999-IH', makeYear: '2017', reservoarCapacity: 1200, horsepower: 350 },
+  { id: 8, registration: 'VŽ-996-GF', makeYear: '2017', reservoarCapacity: 1350, horsepower: 410 },
+  { id: 9, registration: 'VŽ-402-UU', makeYear: '2023', reservoarCapacity: 1330, horsepower: 450 },
+  { id: 10, registration: 'VŽ-252-RR', makeYear: '2022', reservoarCapacity: 1500, horsepower: 520 },
 ];
 
 
 const TruckList = () => {
+  const [alignment, setAlignment] = React.useState('web');
+  const navigate = useNavigate();
+
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string,
+  ) => {
+    setAlignment(newAlignment);
+  };
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={DUMMY_TRUCKS}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />
-    </div>
+    <>
+      <div style={{display: 'flex', justifyContent: 'center', margin: '30px'}}>
+        <ToggleButtonGroup
+          color="primary"
+          value={alignment}
+          exclusive
+          onChange={handleChange}
+          aria-label="Platform"
+        >
+          <ToggleButton selected value="trucks">Trucks</ToggleButton>
+          <ToggleButton value="trailers" onClick={() => navigate('/trailers')}>Trailers</ToggleButton>
+        </ToggleButtonGroup>
+      </div>
+
+      <div style={{ height: 400, display: 'flex', justifyContent: 'center' }}>
+        <div style={{margin: '20px', minWidth: '80%'}}>
+          <DataGrid
+            rows={DUMMY_TRUCKS}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            checkboxSelection
+          />
+        </div>
+      </div>
+    </>
   );
 };
 
