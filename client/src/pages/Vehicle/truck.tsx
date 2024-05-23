@@ -4,6 +4,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Truck from './Model/Truck';
 
 const Button = styled.button(props => ({
   height: '25px',
@@ -28,14 +29,6 @@ const DeleteButton = ({ id }: { id: number }) => {
     <Button color="red" onClick={() => console.log(`Delete ${id}`)}>Delete</Button>
   )
 }
-
-type Truck = {
-  id: number;
-  registration: string;
-  makeYear: string;
-  reservoarCapacity: number;
-  horsepower: number;
-};
 
 const DUMMY_TRUCKS: Truck[] = [
   { id: 1, registration: 'VŽ-393-OL', makeYear: '2019', reservoarCapacity: 1420, horsepower: 480},
