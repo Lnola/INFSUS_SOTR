@@ -1,19 +1,31 @@
+import styled from '@emotion/styled'
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const Button = styled.button(props => ({
+  height: '25px',
+  backgroundColor: props.color,
+  borderRadius: '5px'
+}))
+
+const MyCenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+`
 
 const EditButton = ({ id, setShowEditModal, setEditTruckId }: { id: number; setShowEditModal: (show: boolean) => void; setEditTruckId: (editId: number) => void}) => {
   return (
-    <button style={{height: 'min-content'}} onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit {id}</button>
+    <Button color="green" onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit {id}</Button>
   )
 }
 
 const DeleteButton = ({ id }: { id: number }) => {
   return (
-    <button style={{height: 'min-content'}} onClick={() => console.log(`Delete ${id}`)}>Delete</button>
+    <Button color="red" onClick={() => console.log(`Delete ${id}`)}>Delete</Button>
   )
 }
 
@@ -56,17 +68,17 @@ const TruckList = () => {
       field: 'edit',
       headerName: 'Edit truck',
       width: 120,
-      renderCell: (params) => <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
+      renderCell: (params) => <MyCenteredContainer style={{alignItems: 'center', width: '100%', height: '100%', margin:'0px'}}>
       <EditButton id={params.row.id} setShowEditModal={setShowEditModal} setEditTruckId={setEditTruckId}/>
-    </div>,
+    </MyCenteredContainer>,
     },
     {
       field: 'delete',
       headerName: 'Delete truck',
       width: 120,
-      renderCell: (params) => <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+      renderCell: (params) => <MyCenteredContainer style={{alignItems: 'center', width: '100%', height: '100%', margin:'0px'}}>
       <DeleteButton id={params.row.id} />
-    </div>,
+    </MyCenteredContainer>,
     },
   ];
 
@@ -86,7 +98,7 @@ const TruckList = () => {
   return (
     <>
       {/* toggle buttons */}
-      <div style={{display: 'flex', justifyContent: 'center', margin: '30px'}}>
+      <MyCenteredContainer>
         <ToggleButtonGroup
           color="primary"
           value={alignment}
@@ -97,11 +109,11 @@ const TruckList = () => {
           <ToggleButton selected value="trucks">Trucks</ToggleButton>
           <ToggleButton value="trailers" onClick={() => navigate('/trailers')}>Trailers</ToggleButton>
         </ToggleButtonGroup>
-      </div>
+      </MyCenteredContainer>
 
       {/* Data Table */}
-      <div style={{ minHeight: '50%', display: 'flex', justifyContent: 'center'}}>
-        <div style={{margin: '20px', maxWidth: '80%'}}>
+      <MyCenteredContainer style={{ minHeight: '50%'}}>
+        <div style={{maxWidth: '80%'}}>
           <DataGrid
             rows={trucks}
             columns={columns}
@@ -114,10 +126,9 @@ const TruckList = () => {
             pageSizeOptions={[5, 10]}
           />
         </div>
-
-        {/* Edit Modal */}
-        {showEditModal && <p>EDITING TRUCK: {editTruckId}</p>}
-      </div>
+      </MyCenteredContainer>
+      {/* Edit Modal */}
+      {showEditModal && <p>EDITING TRUCK: {editTruckId}</p>}
     </>
   );
 };
