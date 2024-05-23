@@ -4,6 +4,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import EditTruckModal from './Components/EditTruckModal';
 import Truck from './Model/Truck';
 
 const Button = styled.button(props => ({
@@ -20,7 +21,7 @@ const MyCenteredContainer = styled.div`
 
 const EditButton = ({ id, setShowEditModal, setEditTruckId }: { id: number; setShowEditModal: (show: boolean) => void; setEditTruckId: (editId: number) => void}) => {
   return (
-    <Button color="green" onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit {id}</Button>
+    <Button color="green" onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit</Button>
   )
 }
 
@@ -121,7 +122,7 @@ const TruckList = () => {
         </div>
       </MyCenteredContainer>
       {/* Edit Modal */}
-      {showEditModal && <p>EDITING TRUCK: {editTruckId}</p>}
+      {showEditModal && <EditTruckModal truck={trucks.find((truck) => truck.id == editTruckId)} setShowEditModal={setShowEditModal}/>}
     </>
   );
 };
