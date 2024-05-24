@@ -56,7 +56,7 @@ const TruckList = () => {
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'registration', headerName: 'Registration', width: 130 },
     { field: 'makeYear', headerName: 'Make year', type: 'number', width: 80 },
-    { field: 'reservoarCapacity', headerName: 'Reservoir', type: 'number', width: 90,},
+    { field: 'reservoirCapacity', headerName: 'Reservoir', type: 'number', width: 90,},
     { field: 'horsepower', headerName: 'Horsepower', type: 'number', width: 90,},
     {
       field: 'edit',
