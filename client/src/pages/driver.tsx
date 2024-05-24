@@ -1,6 +1,7 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { driverUrls } from '@/api';
 import Error from '@/components/common/Error';
+import { StyledDataGridContainer } from '@/components/common/styled/StyledDataGridContainer';
 import usePagination from '@/hooks/usePagination';
 import Driver from '@/models/driver';
 
@@ -20,7 +21,7 @@ const DriverList = () => {
 
   if (error) return <Error error={error || 'Missing data'} />;
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <StyledDataGridContainer>
       <DataGrid
         columns={columns}
         rows={data || []}
@@ -31,7 +32,7 @@ const DriverList = () => {
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
       />
-    </div>
+    </StyledDataGridContainer>
   );
 };
 
