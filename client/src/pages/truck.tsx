@@ -11,14 +11,14 @@ import EditTruckModal from '@/components/truck/EditTruckModal';
 import Truck from '@/models/Truck';
 
 
-const Button = styled.button(props => ({
+const StyledButton = styled.button(props => ({
   height: '25px',
   backgroundColor: props.color,
   borderRadius: '5px',
   boxShadow: '3px 3px 5px #888888'
 }))
 
-const MyCenteredContainer = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
   margin: 20px;
@@ -26,19 +26,19 @@ const MyCenteredContainer = styled.div`
 
 const EditButton = ({ id, setShowEditModal, setEditTruckId }: { id: number; setShowEditModal: (show: boolean) => void; setEditTruckId: (editId: number) => void}) => {
   return (
-    <Button color="green" onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit</Button>
+    <StyledButton color="green" onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit</StyledButton>
   )
 }
 
 const DeleteButton = ({ id }: { id: number }) => {
   return (
-    <Button color="red" onClick={() => console.log(`Delete ${id}`)}>Delete</Button>
+    <StyledButton color="red" onClick={() => console.log(`Delete ${id}`)}>Delete</StyledButton>
   )
 }
 
 const AddNewTruckButton = ({setShowAddNewModal}: {setShowAddNewModal: (show: boolean) => void}) => {
   return (
-    <Button style={{height: '35px'}} color="blue" onClick={() => setShowAddNewModal(true)}>Add new truck</Button>
+    <StyledButton style={{height: '35px'}} color="blue" onClick={() => setShowAddNewModal(true)}>Add new truck</StyledButton>
   )
 }
 
@@ -75,17 +75,17 @@ const TruckList = () => {
       field: 'edit',
       headerName: 'Edit truck',
       width: 120,
-      renderCell: (params) => <MyCenteredContainer style={{alignItems: 'center', width: '100%', height: '100%', margin:'0px'}}>
+      renderCell: (params) => <StyledContainer style={{alignItems: 'center', width: '100%', height: '100%', margin:'0px'}}>
       <EditButton id={params.row.id} setShowEditModal={setShowEditModal} setEditTruckId={setEditTruckId}/>
-    </MyCenteredContainer>,
+    </StyledContainer>,
     },
     {
       field: 'delete',
       headerName: 'Delete truck',
       width: 120,
-      renderCell: (params) => <MyCenteredContainer style={{alignItems: 'center', width: '100%', height: '100%', margin:'0px'}}>
+      renderCell: (params) => <StyledContainer style={{alignItems: 'center', width: '100%', height: '100%', margin:'0px'}}>
       <DeleteButton id={params.row.id} />
-    </MyCenteredContainer>,
+    </StyledContainer>,
     },
   ];
 
@@ -113,7 +113,7 @@ const TruckList = () => {
   return (
     <>
       {/* toggle buttons */}
-      <MyCenteredContainer>
+      <StyledContainer>
         <ToggleButtonGroup
           color="primary"
           value={alignment}
@@ -124,15 +124,15 @@ const TruckList = () => {
           <ToggleButton selected value="trucks">Trucks</ToggleButton>
           <ToggleButton value="trailers" onClick={() => navigate('/trailers')}>Trailers</ToggleButton>
         </ToggleButtonGroup>
-      </MyCenteredContainer>
+      </StyledContainer>
 
       {/* Add new truck Button */}
-      <MyCenteredContainer>
+      <StyledContainer>
         <AddNewTruckButton setShowAddNewModal={setShowAddNewModal}></AddNewTruckButton>
-      </MyCenteredContainer>
+      </StyledContainer>
 
       {/* Data Table */}
-      <MyCenteredContainer style={{ minHeight: '50%'}}>
+      <StyledContainer style={{ minHeight: '50%'}}>
         <div style={{maxWidth: '80%'}}>
           <DataGrid
             rows={trucks}
@@ -146,7 +146,7 @@ const TruckList = () => {
             pageSizeOptions={[5, 10]}
           />
         </div>
-      </MyCenteredContainer>
+      </StyledContainer>
       {/* Edit Modal */}
       {showEditModal && <EditTruckModal truck={trucks.find((truck) => truck.id == editTruckId)} setShowEditModal={setShowEditModal} setShowSuccessSnackbar={setShowSuccessSnackbar}/>}
       {/* Add new Modal */}
