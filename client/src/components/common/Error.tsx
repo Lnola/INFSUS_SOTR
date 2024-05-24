@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { router } from '@/router';
 
 type Props = {
-  error: Error;
+  error: string;
 };
 
 const Error = ({ error }: Props) => {
@@ -26,7 +26,7 @@ const Error = ({ error }: Props) => {
   }, [intervalValue, timer]);
   return (
     <div>
-      <h3>Error: {error.message}</h3>
+      <h3>Error: {error}</h3>
       <p>Redirecting to / in {timer}</p>
     </div>
   );
