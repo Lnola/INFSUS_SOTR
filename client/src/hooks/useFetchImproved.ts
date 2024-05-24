@@ -4,10 +4,16 @@ import { extractData } from '@/api/helpers';
 import request from '@/api/request';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+type PaginationParams = {
+  page: number;
+  pageSize: number;
+};
+
 type Props = {
   method: Method;
   path: string;
-  params: object;
+  params: PaginationParams | object;
 };
 
 const useFetchImproved = <T>({ method, path, params }: Props) => {
