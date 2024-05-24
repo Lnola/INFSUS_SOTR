@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { extractData } from '@/api/helpers';
 import request from '@/api/request';
 
@@ -14,23 +14,25 @@ const useFetchImproved = <T>({ method, path }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const setValues = ({ data, error }: { data?: T; error?: string }) => {
-    setData(data || null);
-    setError(error || null);
-  };
-
-  const fetch = async () => {
+  const fetch = useCallback(async () => {
     try {
       if (isLoading) return;
       setIsLoading(true);
+      setData(null);
+      setError(null);
       const response = await request[method.toLowerCase()](path).then(extractData);
-      setValues({ data: response });
+      setData(response);
     } catch (error) {
-      if (error instanceof AxiosError) setValues({ error: error.response?.data.message });
+      if (error instanceof AxiosError) setError(error.response?.data.message);
     } finally {
       setIsLoading(false);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [method, path]);
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   return { fetch, data, isLoading, error };
 };
