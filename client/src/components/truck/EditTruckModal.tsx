@@ -2,7 +2,8 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 import React from 'react';
-import { StyledButtonContainer, StyledForm, StyledModal, StyledModalContainer } from '../common/styled';
+import ModalActions from '@/components/common/ModalActions';
+import {StyledForm, StyledModal, StyledModalContainer } from '@/components/common/styled';
 import Truck from "@/models/Truck";
 
 
@@ -82,10 +83,7 @@ const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truc
                 <input type="number" name="horsepower" value={formData.horsepower} onChange={handleChange} />
               </div>
             </div>
-            <StyledButtonContainer>
-              <button type="submit" style={{ width: '100px', height: '30px' }}>Save</button>
-              <button type="button" style={{ width: '100px', height: '30px' }} onClick={() => setShowEditModal(false)}>Close</button>
-            </StyledButtonContainer>
+            <ModalActions handleClose={setShowEditModal}/>
           </StyledForm>
         </div>
       </StyledModal>

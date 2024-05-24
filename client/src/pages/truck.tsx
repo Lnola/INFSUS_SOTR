@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button'
 import Snackbar from '@mui/material/Snackbar';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -10,14 +11,6 @@ import AddNewTruckModal from '@/components/truck/AddNewTruckModal';
 import EditTruckModal from '@/components/truck/EditTruckModal';
 import Truck from '@/models/Truck';
 
-
-const StyledButton = styled.button(props => ({
-  height: '25px',
-  backgroundColor: props.color,
-  borderRadius: '5px',
-  boxShadow: '3px 3px 5px #888888'
-}))
-
 const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -26,19 +19,19 @@ const StyledContainer = styled.div`
 
 const EditButton = ({ id, setShowEditModal, setEditTruckId }: { id: number; setShowEditModal: (show: boolean) => void; setEditTruckId: (editId: number) => void}) => {
   return (
-    <StyledButton color="green" onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit</StyledButton>
+    <Button variant="contained" color="success" onClick={() => {setShowEditModal(true); setEditTruckId(id)}}>Edit</Button>
   )
 }
 
 const DeleteButton = ({ id }: { id: number }) => {
   return (
-    <StyledButton color="red" onClick={() => console.log(`Delete ${id}`)}>Delete</StyledButton>
+    <Button variant="outlined" color="error" onClick={() => console.log(`Delete ${id}`)}>Delete</Button>
   )
 }
 
 const AddNewTruckButton = ({setShowAddNewModal}: {setShowAddNewModal: (show: boolean) => void}) => {
   return (
-    <StyledButton style={{height: '35px'}} color="blue" onClick={() => setShowAddNewModal(true)}>Add new truck</StyledButton>
+    <Button style={{height: '35px'}} variant="contained" onClick={() => setShowAddNewModal(true)}>Add new truck</Button>
   )
 }
 

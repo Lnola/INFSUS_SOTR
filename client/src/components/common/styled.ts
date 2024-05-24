@@ -1,13 +1,5 @@
 import styled from "@emotion/styled";
 
-export const StyledButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding-left: 20%;
-  padding-right: 20%;
-  padding-bottom: 20px;
-`
 export const StyledForm = styled.form`
   display: flex;
   justify-content: space-between;
