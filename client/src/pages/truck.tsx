@@ -6,9 +6,9 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AddNewTruckModal from './Components/AddNewTruckModal';
-import EditTruckModal from './Components/EditTruckModal';
-import Truck from './Model/Truck';
+import AddNewTruckModal from '@/components/truck/AddNewTruckModal';
+import EditTruckModal from '@/components/truck/EditTruckModal';
+import Truck from '@/models/Truck';
 
 
 const Button = styled.button(props => ({
@@ -97,13 +97,13 @@ const TruckList = () => {
   }, []);
 
   const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
   ) => {
     setAlignment(newAlignment);
   };
 
-  const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }

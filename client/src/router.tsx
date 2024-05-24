@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import TruckList from './pages/Truck';
-import DriverList from '@/pages/Driver';
+import DriverList from '@/pages/driver';
+import TruckList from '@/pages/truck';
 
 export const router = createBrowserRouter([
   {

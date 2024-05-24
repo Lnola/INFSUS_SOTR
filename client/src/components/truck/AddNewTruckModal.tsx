@@ -1,9 +1,8 @@
 import styled from '@emotion/styled'
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { useState } from 'react';
 import React from 'react';
-import Truck from "../Model/Truck";
+import { useState } from 'react';
 
 
 const MyCenteredModalContainer  = styled.div`
@@ -45,13 +44,13 @@ const Form = styled.form`
   align-items: center;
 `
 
-const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truck: Truck | undefined, setShowEditModal: (show: boolean) => void, setShowSuccessSnackbar: (show: boolean) => void}) => {
+const EditTruckModal = ({setShowAddNewModal, setShowSuccessSnackbar}: {setShowAddNewModal: (show: boolean) => void, setShowSuccessSnackbar: (show: boolean) => void}) => {
 
   const [formData, setFormData] = useState({
-    registration: truck?.registration || '',
-    makeYear: truck?.makeYear || '',
-    reservoirCapacity: truck?.reservoirCapacity || 0,
-    horsepower: truck?.horsepower || 0,
+    registration: '',
+    makeYear: '0',
+    reservoirCapacity: 0,
+    horsepower: 0,
   });
   const [open, setOpen] = React.useState(false);
   const [snackbarStatus, setSnackbarStatus] = React.useState<'error' | 'success' | 'warning'>('warning');
@@ -69,14 +68,14 @@ const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truc
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: truck?.id, ...formData }),
+      body: JSON.stringify({ id: null, ...formData }),
     });
 
     if (response.ok) {
       setSnackbarStatus('success')
       setSnackbarText('Truck added successfully!')
       setShowSuccessSnackbar(true)
-      setShowEditModal(false);
+      setShowAddNewModal(false);
     } else {
       setSnackbarStatus('error')
       setSnackbarText('Action was not successful!')
@@ -84,7 +83,7 @@ const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truc
     }
   };
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -97,13 +96,9 @@ const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truc
     <MyCenteredModalContainer>
       <MyModal>
         <div style={{height: '100%'}}>
-          <p style={{textAlign: 'center', margin: '0.75em'}}><strong>EDIT TRUCK</strong></p>
+          <p style={{textAlign: 'center', margin: '0.75em'}}><strong>ADD NEW TRUCK</strong></p>
           <Form onSubmit={handleSubmit}>
             <div>
-              <div>
-                <label>ID: </label>
-                <input type="text" value={truck?.id} readOnly />
-              </div>
               <div>
                 <label>Registration: </label>
                 <input type="text" name="registration" value={formData.registration} onChange={handleChange} />
@@ -123,7 +118,7 @@ const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truc
             </div>
             <ButtonContainer>
               <button type="submit" style={{ width: '100px', height: '30px' }}>Save</button>
-              <button type="button" style={{ width: '100px', height: '30px' }} onClick={() => setShowEditModal(false)}>Close</button>
+              <button type="button" style={{ width: '100px', height: '30px' }} onClick={() => setShowAddNewModal(false)}>Close</button>
             </ButtonContainer>
           </Form>
         </div>
