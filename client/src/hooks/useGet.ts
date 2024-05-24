@@ -1,5 +1,5 @@
-import useFetch, { FetchReturn, BaseProps } from './useFetch';
+import useFetchImproved, { BaseProps } from './useFetchImproved';
 
-export function useGet<T>({ path, query }: BaseProps): FetchReturn<T> {
-  return useFetch<T>({ path, method: 'GET', query: query || {} });
+export function useGet<T>({ path, params }: BaseProps) {
+  return useFetchImproved<T>({ method: 'GET', path, params });
 }
