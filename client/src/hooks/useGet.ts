@@ -1,5 +1,5 @@
-import useFetchImproved, { BaseProps } from './useFetchImproved';
+import useFetch, { BaseProps } from './useFetch';
 
 export function useGet<T>({ path, params }: BaseProps) {
-  return useFetchImproved<T>({ method: 'GET', path, params });
+  return useFetch<T>({ method: 'GET', path, params });
 }

@@ -1,90 +1,50 @@
-import axios from 'axios';
+import { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import { PaginationParams } from './usePagination';
+import { extractData } from '@/api/helpers';
+import request from '@/api/request';
 
-type MethodLowercase = 'get' | 'post' | 'delete' | 'put';
+type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+type PaginationParams = {
+  page: number;
+  pageSize: number;
+};
+
 export type BaseProps = {
   path: string;
-  query?: object & PaginationParams;
-};
-export type GetProps = {
-  method: 'GET';
-  data?: never;
-};
-export type PostProps = {
-  method: 'POST' | 'DELETE' | 'PUT';
-  data: object;
-};
-type ConditionalProps = GetProps | PostProps;
-type Props = BaseProps & ConditionalProps;
-export type FetchReturn<T> = {
-  data: T | undefined;
-  count: number | undefined;
-  isLoading: boolean;
-  refetch: (paginationParams?: PaginationParams) => void;
-  error: Error | null;
+  params?: PaginationParams | object;
 };
 
-function useFetch<T>({ path, method, data, query }: Props): FetchReturn<T> {
-  const [result, setResult] = useState<T>();
-  const [count, setCount] = useState<number | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [internalLoading, setInternalLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
+type Props = BaseProps & {
+  method: Method;
+};
 
-  const fetchData = useCallback(
-    async (paginationParams?: PaginationParams) => {
-      const config = { headers: { 'Content-Type': 'application/json' } };
-      const request = axios.create(config);
+const useFetch = <T>({ method, path, params }: Props) => {
+  const [data, setData] = useState<T | null>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-      const lowercaseMethod = method.toLowerCase() as MethodLowercase;
-      return await request[lowercaseMethod](path, { params: { ...data, ...query, ...paginationParams } });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data, method, path],
-  );
-
-  const fetchAndFormat = useCallback(
-    async (paginationParams?: PaginationParams) => {
-      try {
-        const response = await fetchData(paginationParams);
-        const data = await response.data;
-        setCount(data.count);
-        setResult(data.items);
-        setError(null);
-      } catch (error) {
-        const axiosError = error as any;
-        setError(axiosError.response?.data || axiosError);
-      } finally {
-        setIsLoading(false);
-        setInternalLoading(false);
-      }
-    },
-    [fetchData],
-  );
-
-  const fetchEnsureSingleActive = useCallback(
-    async (paginationParams?: PaginationParams) => {
-      if (internalLoading) {
-        return;
-      }
-      setInternalLoading(true);
+  const fetch = useCallback(async () => {
+    try {
+      if (isLoading) return;
       setIsLoading(true);
-      await fetchAndFormat(paginationParams);
-    },
+      setData(null);
+      setError(null);
+      const response = await request[method.toLowerCase()](path, { params }).then(extractData);
+      setData(response);
+    } catch (error) {
+      if (error instanceof AxiosError) setError(error.response?.data.message);
+    } finally {
+      setIsLoading(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [fetchAndFormat],
-  );
+  }, [method, path]);
 
   useEffect(() => {
-    fetchEnsureSingleActive();
-  }, [fetchEnsureSingleActive]);
+    fetch();
+  }, [fetch]);
 
-  const refetch = (paginationParams?: PaginationParams) => {
-    fetchEnsureSingleActive(paginationParams);
-  };
-
-  return { data: result, count, isLoading, error, refetch };
-}
+  return { fetch, data, isLoading, error };
+};
 
 export default useFetch;
