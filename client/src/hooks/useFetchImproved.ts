@@ -10,17 +10,23 @@ type Props = {
 };
 
 const useFetchImproved = <T>({ method, path }: Props) => {
-  const [data, setData] = useState<T>();
+  const [data, setData] = useState<T | null>();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const setValues = ({ data, error }: { data?: T; error?: string }) => {
+    setData(data || null);
+    setError(error || null);
+  };
 
   const fetch = async () => {
     try {
+      if (isLoading) return;
       setIsLoading(true);
       const response = await request[method.toLowerCase()](path).then(extractData);
-      setData(response);
+      setValues({ data: response });
     } catch (error) {
-      if (error instanceof AxiosError) setError(error.response?.data.message);
+      if (error instanceof AxiosError) setValues({ error: error.response?.data.message });
     } finally {
       setIsLoading(false);
     }
