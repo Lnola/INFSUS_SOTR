@@ -1,18 +1,19 @@
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { useGet } from './useGet';
+import { PaginatedResponse } from '@/api/helpers';
 
-export type PaginationParams = {
-  page?: number;
-  pageSize?: number;
-};
+const usePagination = <T>(path: string) => {
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 1 });
 
-const usePagination = () => {
-  const [paginationParams, setPaginationParams] = useState<PaginationParams>({ page: 0, pageSize: 1 });
+  const { data, isLoading, error } = useGet<PaginatedResponse<T>>({ path, params: paginationModel });
 
-  const handlePaginationModelChange = (params: PaginationParams) => {
-    setPaginationParams(params);
-  };
+  const countRef = useRef(data?.count || 0);
+  const count = useMemo(() => {
+    if (data?.count) countRef.current = data.count;
+    return countRef.current;
+  }, [data?.count]);
 
-  return { paginationParams, handlePaginationModelChange };
+  return { data: data?.items, count, isLoading, error, paginationModel, setPaginationModel };
 };
 
 export default usePagination;
