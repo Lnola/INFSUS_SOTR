@@ -13,7 +13,7 @@ export class PaginationParams {
   pageSize?: number;
 
   static get default() {
-    return { page: '1', pageSize: '10' };
+    return { page: '0', pageSize: '10' };
   }
 
   extractParams() {
