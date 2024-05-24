@@ -38,7 +38,7 @@ const useFetch = <T>({ method, path, params }: Props) => {
       setIsLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [method, path]);
+  }, [method, path, params]);
 
   useEffect(() => {
     fetch();
