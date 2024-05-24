@@ -13,7 +13,7 @@ export class DriverService {
 
   async find({ page, pageSize }: PaginationParams) {
     const paginationOptions = {
-      offset: page * pageSize,
+      offset: (page - 1) * pageSize,
       limit: pageSize,
     };
     const [items, count] = await this.driverRepository.findAndCount({}, paginationOptions);
