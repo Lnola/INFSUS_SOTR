@@ -1,7 +1,8 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useMemo, useRef, useState } from 'react';
 import { driverUrls } from '@/api';
+import { PaginatedResponse } from '@/api/helpers';
 import Error from '@/components/common/Error';
-import Loading from '@/components/common/Loading';
 import { useGet } from '@/hooks/useGet';
 import Driver from '@/models/driver';
 
@@ -15,17 +16,36 @@ const columns: GridColDef[] = [
 ];
 
 const DriverList = () => {
-  const { data: drivers, isLoading, error } = useGet<Driver[]>({ path: driverUrls.getAll });
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 1,
+  });
+  const { data, isLoading, error } = useGet<PaginatedResponse<Driver[]>>({
+    path: driverUrls.getAll,
+    params: paginationModel,
+  });
 
-  if (error) return <Error error={error} />;
-  if (isLoading) return <Loading />;
+  const rowCountRef = useRef(data?.count || 0);
+
+  const rowCount = useMemo(() => {
+    if (data?.count !== undefined) {
+      rowCountRef.current = data.count;
+    }
+    return rowCountRef.current;
+  }, [data?.count]);
+
+  if (error) return <Error error={error || 'Missing data'} />;
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         columns={columns}
-        rows={drivers}
-        initialState={{ pagination: { paginationModel: { page: 0, pageSize: 5 } } }}
-        pageSizeOptions={[5, 10]}
+        rows={data?.items || []}
+        rowCount={rowCount}
+        loading={isLoading}
+        pageSizeOptions={[1, 5, 10]}
+        paginationModel={paginationModel}
+        paginationMode="server"
+        onPaginationModelChange={setPaginationModel}
       />
     </div>
   );
