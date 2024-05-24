@@ -3,15 +3,7 @@ import { driverUrls } from '@/api';
 import Error from '@/components/common/Error';
 import Loading from '@/components/common/Loading';
 import { useGet } from '@/hooks/useGet';
-
-type Driver = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  contactNumber: string;
-  employmentStartDate: Date;
-  employmentEndDate?: Date;
-};
+import Driver from '@/models/driver';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
