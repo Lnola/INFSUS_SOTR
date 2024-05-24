@@ -3,3 +3,5 @@
 
 # npm run format:staged
 # npm run lint:staged
+
+npm run format
