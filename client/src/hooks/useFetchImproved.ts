@@ -7,9 +7,10 @@ type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type Props = {
   method: Method;
   path: string;
+  params: object;
 };
 
-const useFetchImproved = <T>({ method, path }: Props) => {
+const useFetchImproved = <T>({ method, path, params }: Props) => {
   const [data, setData] = useState<T | null>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +21,7 @@ const useFetchImproved = <T>({ method, path }: Props) => {
       setIsLoading(true);
       setData(null);
       setError(null);
-      const response = await request[method.toLowerCase()](path).then(extractData);
+      const response = await request[method.toLowerCase()](path, { params }).then(extractData);
       setData(response);
     } catch (error) {
       if (error instanceof AxiosError) setError(error.response?.data.message);
