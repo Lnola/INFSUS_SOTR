@@ -4,13 +4,15 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AddNewTruckModal from './Components/AddNewTruckModal';
 import EditTruckModal from './Components/EditTruckModal';
 import Truck from './Model/Truck';
 
 const Button = styled.button(props => ({
   height: '25px',
   backgroundColor: props.color,
-  borderRadius: '5px'
+  borderRadius: '5px',
+  boxShadow: '3px 3px 5px #888888'
 }))
 
 const MyCenteredContainer = styled.div`
@@ -28,6 +30,12 @@ const EditButton = ({ id, setShowEditModal, setEditTruckId }: { id: number; setS
 const DeleteButton = ({ id }: { id: number }) => {
   return (
     <Button color="red" onClick={() => console.log(`Delete ${id}`)}>Delete</Button>
+  )
+}
+
+const AddNewTruckButton = ({setShowAddNewModal}: {setShowAddNewModal: (show: boolean) => void}) => {
+  return (
+    <Button style={{height: '35px'}} color="blue" onClick={() => setShowAddNewModal(true)}>Add new truck</Button>
   )
 }
 
@@ -51,6 +59,7 @@ const TruckList = () => {
   const [trucks, setTrucks] = useState<Truck[]>([]);
   const [showEditModal, setShowEditModal] = useState(false)
   const [editTruckId, setEditTruckId] = useState<number | null>(null)
+  const [showAddNewModal, setShowAddNewModal] = useState(false)
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -105,6 +114,10 @@ const TruckList = () => {
         </ToggleButtonGroup>
       </MyCenteredContainer>
 
+      <MyCenteredContainer>
+        <AddNewTruckButton setShowAddNewModal={setShowAddNewModal}></AddNewTruckButton>
+      </MyCenteredContainer>
+
       {/* Data Table */}
       <MyCenteredContainer style={{ minHeight: '50%'}}>
         <div style={{maxWidth: '80%'}}>
@@ -123,6 +136,9 @@ const TruckList = () => {
       </MyCenteredContainer>
       {/* Edit Modal */}
       {showEditModal && <EditTruckModal truck={trucks.find((truck) => truck.id == editTruckId)} setShowEditModal={setShowEditModal}/>}
+      {/* Add new Modal */}
+      {showAddNewModal && <AddNewTruckModal setShowAddNewModal={setShowAddNewModal}/>}
+
     </>
   );
 };
