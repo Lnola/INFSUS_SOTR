@@ -1,5 +1,8 @@
 import styled from '@emotion/styled'
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
+import React from 'react';
 import Truck from "../Model/Truck";
 
 
@@ -42,7 +45,7 @@ const Form = styled.form`
   align-items: center;
 `
 
-const EditTruckModal = ({truck, setShowEditModal}: {truck: Truck | undefined, setShowEditModal: (show: boolean) => void}) => {
+const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truck: Truck | undefined, setShowEditModal: (show: boolean) => void, setShowSuccessSnackbar: (show: boolean) => void}) => {
 
   const [formData, setFormData] = useState({
     registration: truck?.registration || '',
@@ -50,6 +53,9 @@ const EditTruckModal = ({truck, setShowEditModal}: {truck: Truck | undefined, se
     reservoirCapacity: truck?.reservoirCapacity || 0,
     horsepower: truck?.horsepower || 0,
   });
+  const [open, setOpen] = React.useState(false);
+  const [snackbarStatus, setSnackbarStatus] = React.useState<'error' | 'success' | 'warning'>('warning');
+  const [snackbarText, setSnackbarText] = React.useState('Neki default text');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -67,11 +73,23 @@ const EditTruckModal = ({truck, setShowEditModal}: {truck: Truck | undefined, se
     });
 
     if (response.ok) {
-      alert('Truck updated successfully!');
+      setSnackbarStatus('success')
+      setSnackbarText('Truck added successfully!')
+      setShowSuccessSnackbar(true)
       setShowEditModal(false);
     } else {
-      alert('Failed to update truck.');
+      setSnackbarStatus('error')
+      setSnackbarText('Action was not successful!')
+      setOpen(true);
     }
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
 
@@ -110,6 +128,16 @@ const EditTruckModal = ({truck, setShowEditModal}: {truck: Truck | undefined, se
           </Form>
         </div>
       </MyModal>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={snackbarStatus}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbarText}
+        </Alert>
+      </Snackbar>
     </MyCenteredModalContainer>
   )
 }

@@ -1,4 +1,6 @@
 import styled from '@emotion/styled'
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -7,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import AddNewTruckModal from './Components/AddNewTruckModal';
 import EditTruckModal from './Components/EditTruckModal';
 import Truck from './Model/Truck';
+
 
 const Button = styled.button(props => ({
   height: '25px',
@@ -60,6 +63,7 @@ const TruckList = () => {
   const [showEditModal, setShowEditModal] = useState(false)
   const [editTruckId, setEditTruckId] = useState<number | null>(null)
   const [showAddNewModal, setShowAddNewModal] = useState(false)
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false)
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -98,6 +102,14 @@ const TruckList = () => {
   ) => {
     setAlignment(newAlignment);
   };
+
+  const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShowSuccessSnackbar(false);
+  };
+
   return (
     <>
       {/* toggle buttons */}
@@ -114,6 +126,7 @@ const TruckList = () => {
         </ToggleButtonGroup>
       </MyCenteredContainer>
 
+      {/* Add new truck Button */}
       <MyCenteredContainer>
         <AddNewTruckButton setShowAddNewModal={setShowAddNewModal}></AddNewTruckButton>
       </MyCenteredContainer>
@@ -135,10 +148,20 @@ const TruckList = () => {
         </div>
       </MyCenteredContainer>
       {/* Edit Modal */}
-      {showEditModal && <EditTruckModal truck={trucks.find((truck) => truck.id == editTruckId)} setShowEditModal={setShowEditModal}/>}
+      {showEditModal && <EditTruckModal truck={trucks.find((truck) => truck.id == editTruckId)} setShowEditModal={setShowEditModal} setShowSuccessSnackbar={setShowSuccessSnackbar}/>}
       {/* Add new Modal */}
-      {showAddNewModal && <AddNewTruckModal setShowAddNewModal={setShowAddNewModal}/>}
+      {showAddNewModal && <AddNewTruckModal setShowAddNewModal={setShowAddNewModal} setShowSuccessSnackbar={setShowSuccessSnackbar}/>}
 
+      <Snackbar open={showSuccessSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity='success'
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Action performed successfully!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

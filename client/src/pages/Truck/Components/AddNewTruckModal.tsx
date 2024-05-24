@@ -1,4 +1,7 @@
 import styled from '@emotion/styled'
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import React from 'react';
 import { useState } from 'react';
 
 
@@ -41,7 +44,7 @@ const Form = styled.form`
   align-items: center;
 `
 
-const EditTruckModal = ({setShowAddNewModal}: {setShowAddNewModal: (show: boolean) => void}) => {
+const EditTruckModal = ({setShowAddNewModal, setShowSuccessSnackbar}: {setShowAddNewModal: (show: boolean) => void, setShowSuccessSnackbar: (show: boolean) => void}) => {
 
   const [formData, setFormData] = useState({
     registration: '',
@@ -49,6 +52,9 @@ const EditTruckModal = ({setShowAddNewModal}: {setShowAddNewModal: (show: boolea
     reservoirCapacity: 0,
     horsepower: 0,
   });
+  const [open, setOpen] = React.useState(false);
+  const [snackbarStatus, setSnackbarStatus] = React.useState<'error' | 'success' | 'warning'>('warning');
+  const [snackbarText, setSnackbarText] = React.useState('Neki default text');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -66,11 +72,23 @@ const EditTruckModal = ({setShowAddNewModal}: {setShowAddNewModal: (show: boolea
     });
 
     if (response.ok) {
-      alert('Truck added successfully!');
+      setSnackbarStatus('success')
+      setSnackbarText('Truck added successfully!')
+      setShowSuccessSnackbar(true)
       setShowAddNewModal(false);
     } else {
-      alert('Failed to add new truck.');
+      setSnackbarStatus('error')
+      setSnackbarText('Action was not successful!')
+      setOpen(true);
     }
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
 
@@ -105,6 +123,16 @@ const EditTruckModal = ({setShowAddNewModal}: {setShowAddNewModal: (show: boolea
           </Form>
         </div>
       </MyModal>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={snackbarStatus}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbarText}
+        </Alert>
+      </Snackbar>
     </MyCenteredModalContainer>
   )
 }
