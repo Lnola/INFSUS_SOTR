@@ -11,12 +11,13 @@ export class DriverService {
     private driverRepository: EntityRepository<Driver>,
   ) {}
 
-  find({ page, pageSize }: PaginationParams) {
+  async find({ page, pageSize }: PaginationParams) {
     const paginationOptions = {
-      offset: (page - 1) * pageSize,
+      offset: page * pageSize,
       limit: pageSize,
     };
-    return this.driverRepository.find({}, paginationOptions);
+    const [items, count] = await this.driverRepository.findAndCount({}, paginationOptions);
+    return { items, count };
   }
 
   findOne(id: number) {
