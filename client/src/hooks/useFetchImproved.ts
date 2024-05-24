@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { useState } from 'react';
 import { extractData } from '@/api/helpers';
 import request from '@/api/request';
 
@@ -9,16 +10,23 @@ type Props = {
 };
 
 const useFetchImproved = ({ method, path }: Props) => {
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
   const fetch = async () => {
     try {
+      setIsLoading(true);
       const response = await request[method.toLowerCase()](path).then(extractData);
-      console.log(response);
+      setData(response);
     } catch (error) {
-      if (error instanceof AxiosError) console.log(error.response?.data.message);
+      if (error instanceof AxiosError) setError(error.response?.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { fetch };
+  return { fetch, data, isLoading, error };
 };
 
 export default useFetchImproved;
