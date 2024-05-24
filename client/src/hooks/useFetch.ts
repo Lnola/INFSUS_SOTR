@@ -37,7 +37,6 @@ function useFetch<T>({ path, method, data, query }: Props): FetchReturn<T> {
       const config = { headers: { 'Content-Type': 'application/json' } };
       const request = axios.create(config);
 
-      console.log({ ...data, ...query, ...paginationParams });
       const lowercaseMethod = method.toLowerCase() as MethodLowercase;
       return await request[lowercaseMethod](path, { params: { ...data, ...query, ...paginationParams } });
     },
@@ -54,7 +53,6 @@ function useFetch<T>({ path, method, data, query }: Props): FetchReturn<T> {
         setResult(data.items);
         setError(null);
       } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const axiosError = error as any;
         setError(axiosError.response?.data || axiosError);
       } finally {

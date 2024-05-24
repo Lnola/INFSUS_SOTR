@@ -6,7 +6,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', 'import'],
   rules: {
-    'no-explicit-any': false,
+    '@typescript-eslint/no-explicit-any': 'off',
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     // TODO: extract these to the root
     'no-console': 'warn',
