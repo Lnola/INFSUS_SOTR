@@ -10,10 +10,13 @@ type PaginationParams = {
   pageSize: number;
 };
 
-type Props = {
-  method: Method;
+export type BaseProps = {
   path: string;
-  params: PaginationParams | object;
+  params?: PaginationParams | object;
+};
+
+type Props = BaseProps & {
+  method: Method;
 };
 
 const useFetchImproved = <T>({ method, path, params }: Props) => {
