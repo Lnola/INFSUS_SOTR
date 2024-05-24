@@ -9,8 +9,8 @@ type Props = {
   path: string;
 };
 
-const useFetchImproved = ({ method, path }: Props) => {
-  const [data, setData] = useState();
+const useFetchImproved = <T>({ method, path }: Props) => {
+  const [data, setData] = useState<T>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
