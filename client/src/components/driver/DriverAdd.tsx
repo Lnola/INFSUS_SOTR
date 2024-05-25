@@ -87,9 +87,9 @@ const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers, driver }: Props) => {
       if (!error) {
         setIsOpen(false);
         refetchDrivers();
-        toast.success('Driver added successfully!');
+        toast.success('Success!');
       } else {
-        toast.error(`Failed to add driver! ${error}`);
+        toast.error(`Failed! ${error}`);
       }
     }
   }, [error, wasFetched, setIsOpen, refetchDrivers]);
