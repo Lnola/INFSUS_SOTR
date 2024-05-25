@@ -5,10 +5,11 @@ import Snackbar from '@mui/material/Snackbar';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddNewTruckModal from '@/components/truck/AddNewTruckModal';
 import EditTruckModal from '@/components/truck/EditTruckModal';
+import usePagination from '@/hooks/usePagination';
 import Truck from '@/models/truck';
 
 const StyledContainer = styled.div`
@@ -56,23 +57,9 @@ const AddNewTruckButton = ({ setShowAddNewModal }: { setShowAddNewModal: (show: 
   );
 };
 
-const DUMMY_TRUCKS: Truck[] = [
-  { id: 1, registration: 'VŽ-393-OL', makeYear: '2019', reservoirCapacity: 1420, horsepower: 480 },
-  { id: 2, registration: 'VŽ-999-IH', makeYear: '2017', reservoirCapacity: 1200, horsepower: 350 },
-  { id: 3, registration: 'VŽ-996-GF', makeYear: '2017', reservoirCapacity: 1350, horsepower: 410 },
-  { id: 4, registration: 'VŽ-402-UU', makeYear: '2023', reservoirCapacity: 1330, horsepower: 450 },
-  { id: 5, registration: 'VŽ-252-RR', makeYear: '2022', reservoirCapacity: 1500, horsepower: 520 },
-  { id: 6, registration: 'VŽ-393-OL', makeYear: '2019', reservoirCapacity: 1420, horsepower: 480 },
-  { id: 7, registration: 'VŽ-999-IH', makeYear: '2017', reservoirCapacity: 1200, horsepower: 350 },
-  { id: 8, registration: 'VŽ-996-GF', makeYear: '2017', reservoirCapacity: 1350, horsepower: 410 },
-  { id: 9, registration: 'VŽ-402-UU', makeYear: '2023', reservoirCapacity: 1330, horsepower: 450 },
-  { id: 10, registration: 'VŽ-252-RR', makeYear: '2022', reservoirCapacity: 1500, horsepower: 520 },
-];
-
 const TruckList = () => {
   const [alignment, setAlignment] = React.useState('web');
   const navigate = useNavigate();
-  const [trucks, setTrucks] = useState<Truck[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editTruckId, setEditTruckId] = useState<number | null>(null);
   const [showAddNewModal, setShowAddNewModal] = useState(false);
@@ -81,8 +68,8 @@ const TruckList = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'registration', headerName: 'Registration', width: 130 },
-    { field: 'makeYear', headerName: 'Make year', type: 'number', width: 80 },
-    { field: 'reservoirCapacity', headerName: 'Reservoir', type: 'number', width: 90 },
+    { field: 'productionYear', headerName: 'Make year', type: 'number', width: 80 },
+    { field: 'tankCapacity', headerName: 'Reservoir', type: 'number', width: 90 },
     { field: 'horsepower', headerName: 'Horsepower', type: 'number', width: 90 },
     {
       field: 'edit',
@@ -106,12 +93,10 @@ const TruckList = () => {
     },
   ];
 
-  // Fetch mock function
-  useEffect(() => {
-    setTimeout(() => {
-      setTrucks(DUMMY_TRUCKS);
-    }, 1000);
-  }, []);
+  const { data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Truck>(
+    "/api/trucks",
+  );
+
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
@@ -147,22 +132,21 @@ const TruckList = () => {
       <StyledContainer style={{ minHeight: '50%' }}>
         <div style={{ maxWidth: '80%' }}>
           <DataGrid
-            rows={trucks}
             columns={columns}
-            disableRowSelectionOnClick
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
+            rows={data || []}
+            rowCount={count}
+            loading={isLoading}
+            pageSizeOptions={[1, 5, 10]}
+            paginationMode="server"
+            paginationModel={paginationModel}
+            onPaginationModelChange={setPaginationModel}
           />
         </div>
       </StyledContainer>
       {/* Edit Modal */}
-      {showEditModal && (
+      {showEditModal && data &&(
         <EditTruckModal
-          truck={trucks.find(truck => truck.id == editTruckId)}
+          truck={data?.find(truck => truck.id == editTruckId)}
           setShowEditModal={setShowEditModal}
           setShowSuccessSnackbar={setShowSuccessSnackbar}
         />

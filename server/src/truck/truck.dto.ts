@@ -1,6 +1,6 @@
 export class TruckDto {
   registration: string;
-  makeYear: string;
-  reservoirCapacity: number;
+  productionYear: string;
+  tankCapacity: number;
   horsepower: number;
 }

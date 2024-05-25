@@ -17,8 +17,8 @@ const EditTruckModal = ({
 }) => {
   const [formData, setFormData] = useState({
     registration: truck?.registration || '',
-    makeYear: truck?.makeYear || '',
-    reservoirCapacity: truck?.reservoirCapacity || 0,
+    makeYear: truck?.productionYear || '',
+    reservoirCapacity: truck?.tankCapacity || 0,
     horsepower: truck?.horsepower || 0,
   });
   const [open, setOpen] = React.useState(false);
