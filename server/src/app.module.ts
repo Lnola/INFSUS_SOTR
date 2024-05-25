@@ -4,6 +4,8 @@ import databaseConfig from 'config/database.config';
 import { DriverModule } from 'driver/driver.module';
 import { HealthController } from 'health.controller';
 import { DatabaseModule } from 'shared/database/database.module';
+import { TrailerModule } from 'trailer/trailer.module';
+import { TruckModule } from 'truck/truck.module';
 import { CompanyLocationModule } from './company-location/company-location.module';
 
 const GlobalConfigModule = ConfigModule.forRoot({
@@ -12,7 +14,7 @@ const GlobalConfigModule = ConfigModule.forRoot({
 });
 
 @Module({
-  imports: [GlobalConfigModule, DatabaseModule, CompanyLocationModule, DriverModule],
+  imports: [GlobalConfigModule, DatabaseModule, CompanyLocationModule, DriverModule, TruckModule, TrailerModule],
   controllers: [HealthController],
 })
 export class AppModule {}

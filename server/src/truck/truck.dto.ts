@@ -1,9 +1,6 @@
-type Truck = {
-  id: number;
+export class TruckDto {
   registration: string;
   productionYear: string;
   tankCapacity: number;
   horsepower: number;
-};
-
-export default Truck;
+}
