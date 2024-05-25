@@ -1,9 +1,6 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { driverUrls } from '@/api';
 import Error from '@/components/common/Error';
 import { StyledDataGridContainer } from '@/components/common/styled/StyledDataGridContainer';
-import usePagination from '@/hooks/usePagination';
-import Driver from '@/models/driver';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -14,11 +11,7 @@ const columns: GridColDef[] = [
   { field: 'employmentEndDate', headerName: 'Employment End Date', width: 130, type: 'string' },
 ];
 
-const DriverList = () => {
-  const { data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Driver[]>(
-    driverUrls.get,
-  );
-
+const DriverList = ({ error, data, count, isLoading, paginationModel, setPaginationModel }) => {
   if (error) return <Error error={error || 'Missing data'} />;
   return (
     <StyledDataGridContainer>

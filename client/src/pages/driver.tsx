@@ -1,9 +1,13 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import { driverUrls } from '@/api';
 import DriverAdd from '@/components/driver/DriverAdd';
 import DriverList from '@/components/driver/DriverList';
+import usePagination from '@/hooks/usePagination';
+import Driver from '@/models/driver';
 
-const Driver = () => {
+const DriverPage = () => {
+  const { fetch, ...paginationProps } = usePagination<Driver[]>(driverUrls.get);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   return (
@@ -11,10 +15,10 @@ const Driver = () => {
       <Button variant="contained" onClick={() => setIsAddDialogOpen(true)}>
         Add Driver
       </Button>
-      <DriverList />
-      {isAddDialogOpen && <DriverAdd isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} />}
+      <DriverList {...paginationProps} />
+      {isAddDialogOpen && <DriverAdd isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} refetchDrivers={fetch} />}
     </>
   );
 };
 
-export default Driver;
+export default DriverPage;
