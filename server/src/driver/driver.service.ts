@@ -38,4 +38,14 @@ export class DriverService {
       throw error;
     }
   }
+
+  async update(id: number, updateDriverDto: CreateDriverDto) {
+    const driver = await this.driverRepository.findOneOrFail(id);
+    driver.firstName = updateDriverDto.firstName;
+    driver.lastName = updateDriverDto.lastName;
+    driver.contactNumber = updateDriverDto.contactNumber;
+    driver.employmentStartDate = updateDriverDto.employmentStartDate;
+    driver.employmentEndDate = updateDriverDto.employmentEndDate;
+    return await this.driverRepository.getEntityManager().persistAndFlush(driver);
+  }
 }
