@@ -19,7 +19,7 @@ const columns: GridColDef[] = [
     headerName: 'Employment End Date',
     width: 130,
     type: 'date',
-    valueFormatter: value => new Date(value).toLocaleDateString(),
+    valueFormatter: value => (value ? new Date(value).toLocaleDateString() : null),
   },
 ];
 
