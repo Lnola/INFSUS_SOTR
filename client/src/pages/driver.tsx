@@ -11,10 +11,13 @@ import Driver from '@/models/driver';
 const DriverPage = () => {
   const { fetch, ...paginationProps } = usePagination<Driver[]>(driverUrls.get);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [driver, setDriver] = useState<Driver>();
 
-  const handleEdit = (id: number) => () => {
-    console.log('Edit', id);
+  const handleEdit = (driver: Driver) => {
+    setDriver(driver);
+    setIsAddDialogOpen(true);
   };
+
   const handleDelete = async (id: number) => {
     try {
       await removeDriver(id);
@@ -31,7 +34,9 @@ const DriverPage = () => {
         Add Driver
       </Button>
       <DriverList {...paginationProps} handleEdit={handleEdit} handleDelete={handleDelete} />
-      {isAddDialogOpen && <DriverAdd isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} refetchDrivers={fetch} />}
+      {isAddDialogOpen && (
+        <DriverAdd isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} refetchDrivers={fetch} driver={driver} />
+      )}
     </>
   );
 };
