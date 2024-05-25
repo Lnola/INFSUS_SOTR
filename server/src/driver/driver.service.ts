@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, UniqueConstraintViolationException } from '@mikro-orm/postgresql';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import Driver from './entities/driver.entity';
@@ -40,7 +40,8 @@ export class DriverService {
   }
 
   async update(id: number, updateDriverDto: CreateDriverDto) {
-    const driver = await this.driverRepository.findOneOrFail(id);
+    const driver = await this.driverRepository.findOne(id);
+    if (!driver) throw new NotFoundException('Driver not found!');
     driver.firstName = updateDriverDto.firstName;
     driver.lastName = updateDriverDto.lastName;
     driver.contactNumber = updateDriverDto.contactNumber;
