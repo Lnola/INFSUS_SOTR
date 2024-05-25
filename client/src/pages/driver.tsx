@@ -1,48 +1,47 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
+import { format } from 'date-fns';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { driverUrls } from '@/api';
+import { removeDriver } from '@/api/driver';
+import DriverAdd from '@/components/driver/DriverAdd';
+import DriverList from '@/components/driver/DriverList';
+import usePagination from '@/hooks/usePagination';
+import Driver from '@/models/driver';
 
-type Driver = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  contactNumber: string;
-  employmentStartDate: Date;
-  employmentEndDate?: Date;
-};
+const DriverPage = () => {
+  const { fetch, ...paginationProps } = usePagination<Driver[]>(driverUrls.get);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [driver, setDriver] = useState<Driver>();
 
-const DUMMY_DRIVERS: Driver[] = [
-  { id: 1, firstName: 'John', lastName: 'Doe', contactNumber: '1234567890', employmentStartDate: new Date() },
-  { id: 2, firstName: 'Jane', lastName: 'Doe', contactNumber: '0987654321', employmentStartDate: new Date() },
-];
+  const handleEdit = (driver: Driver) => {
+    driver.employmentStartDate = format(driver.employmentStartDate, 'yyyy-MM-dd');
+    driver.employmentEndDate = driver.employmentEndDate && format(driver.employmentEndDate, 'yyyy-MM-dd');
+    setDriver(driver);
+    setIsAddDialogOpen(true);
+  };
 
-const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  { field: 'contactNumber', headerName: 'Contact Number', width: 130 },
-  { field: 'employmentStartDate', headerName: 'Employment Start Date', width: 130, type: 'date' },
-  { field: 'employmentEndDate', headerName: 'Employment End Date', width: 130, type: 'date' },
-];
-
-const DriverList = () => {
-  const [drivers, setDrivers] = useState<Driver[]>([]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setDrivers(DUMMY_DRIVERS);
-    }, 1000);
-  }, []);
+  const handleDelete = async (id: number) => {
+    try {
+      await removeDriver(id);
+      toast.success('Driver deleted');
+      fetch();
+    } catch (error) {
+      toast.error('Failed to delete driver');
+    }
+  };
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        columns={columns}
-        rows={drivers}
-        initialState={{ pagination: { paginationModel: { page: 0, pageSize: 5 } } }}
-        pageSizeOptions={[5, 10]}
-      />
-    </div>
+    <>
+      <Button variant="contained" onClick={() => setIsAddDialogOpen(true)}>
+        Add Driver
+      </Button>
+      <DriverList {...paginationProps} handleEdit={handleEdit} handleDelete={handleDelete} />
+      {isAddDialogOpen && (
+        <DriverAdd isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} refetchDrivers={fetch} driver={driver} />
+      )}
+    </>
   );
 };
 
-export default DriverList;
+export default DriverPage;
