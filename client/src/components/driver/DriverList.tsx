@@ -16,7 +16,7 @@ const columns: GridColDef[] = [
 
 const DriverList = () => {
   const { data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Driver[]>(
-    driverUrls.getAll,
+    driverUrls.get,
   );
 
   if (error) return <Error error={error || 'Missing data'} />;

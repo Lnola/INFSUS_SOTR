@@ -1,8 +1,6 @@
 import urljoin from 'url-join';
 
 const base = urljoin('/api/drivers');
-const getAll = base;
+const get = base;
 
-export default {
-  getAll,
-};
+export default { get };
