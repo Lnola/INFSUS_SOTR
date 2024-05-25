@@ -37,7 +37,7 @@ const DriverList = ({
       headerName: 'Edit',
       width: 120,
       renderCell: params => (
-        <Button variant="contained" onClick={() => handleEdit(params.row.id)}>
+        <Button variant="contained" onClick={() => handleEdit(params.row)}>
           Edit
         </Button>
       ),
