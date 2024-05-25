@@ -3,7 +3,7 @@ import { useGet } from './useGet';
 import { PaginatedResponse } from '@/api/helpers';
 
 const usePagination = <T>(path: string) => {
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 1 });
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 5 });
 
   const { fetch, data, isLoading, error } = useGet<PaginatedResponse<T>>({ path, params: paginationModel });
 
