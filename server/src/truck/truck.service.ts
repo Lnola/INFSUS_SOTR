@@ -2,8 +2,8 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, wrap } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationParams } from 'shared/decorators/pagination.decorator';
+import { TruckDto } from './dto/truck.dto';
 import Truck from './entities/truck.entity';
-import { TruckDto } from './truck.dto';
 
 @Injectable()
 export class TruckService {

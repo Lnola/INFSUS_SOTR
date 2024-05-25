@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import Pagination, { PaginationParams } from 'shared/decorators/pagination.decorator';
-import { TruckDto } from './truck.dto';
+import { TruckDto } from './dto/truck.dto';
 import { TruckService } from './truck.service';
 
 @Controller('trucks')
