@@ -47,7 +47,7 @@ const initialFormData = {
   contactNumberError: '',
   employmentStartDate: '',
   empoloymentStartDateError: '',
-  employmentEndDate: '',
+  employmentEndDate: null,
   employmentEndDateError: '',
 };
 
@@ -133,7 +133,7 @@ const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers }: Props) => {
           label="Employment End Date"
           variant="standard"
           type="date"
-          value={formData.employmentEndDate}
+          value={formData.employmentEndDate || ''}
           onChange={handleChange}
           error={!!formData.employmentEndDateError}
           helperText={formData.employmentEndDateError}
