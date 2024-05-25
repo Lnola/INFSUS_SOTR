@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
+import { driverUrls } from '@/api';
 import FormDialog from '@/components/common/FormDialog';
+import { usePost } from '@/hooks/usePost';
 
 const StyledDatePickerContainer = styled.div`
   display: flex;
@@ -36,19 +38,22 @@ const initialFormData = {
 
 const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
   const [formData, setFormData] = useState(initialFormData);
+  const { fetch: create } = usePost<any>({ path: driverUrls.create, params: formData, start: false });
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const value = event.target.value;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!event.currentTarget.reportValidity()) return;
     if (formData.contactNumber.length < 10 || formData.contactNumber.length > 12) {
       setFormData(prev => ({ ...prev, contactNumberError: 'Contact number must be between 10 and 12 digits' }));
       return;
     }
+    await create();
     setIsOpen(false);
   };
 
