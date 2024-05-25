@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { TextField } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
 import { useState } from 'react';
 import FormDialog from '@/components/common/FormDialog';
 
@@ -27,8 +26,8 @@ const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
     firstName: '',
     lastName: '',
     contactNumber: '',
-    employmentStartDate: null,
-    employmentEndDate: null,
+    employmentStartDate: '',
+    employmentEndDate: '',
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,17 +67,23 @@ const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
         onChange={handleChange}
       />
       <StyledDatePickerContainer>
-        <DatePicker
+        <TextField
+          InputLabelProps={{ shrink: true }}
           name="employmentStartDate"
           label="Employment Start Date"
+          variant="standard"
+          type="date"
           value={formData.employmentStartDate}
-          onChange={newValue => setFormData(prev => ({ ...prev, employmentStartDate: newValue }))}
+          onChange={handleChange}
         />
-        <DatePicker
+        <TextField
+          InputLabelProps={{ shrink: true }}
           name="employmentEndDate"
           label="Employment End Date"
+          variant="standard"
+          type="date"
           value={formData.employmentEndDate}
-          onChange={newValue => setFormData(prev => ({ ...prev, employmentEndDate: newValue }))}
+          onChange={handleChange}
         />
       </StyledDatePickerContainer>
     </FormDialog>
