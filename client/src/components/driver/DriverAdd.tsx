@@ -19,11 +19,6 @@ const StyledDatePickerContainer = styled.div`
   }
 `;
 
-type Props = {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-};
-
 const initialFormData = {
   firstName: '',
   firstNameError: '',
@@ -37,7 +32,13 @@ const initialFormData = {
   employmentEndDateError: '',
 };
 
-const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
+type Props = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  refetchDrivers: () => void;
+};
+
+const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers }: Props) => {
   const [formData, setFormData] = useState(initialFormData);
   const { fetch: create, error } = usePost<any>({ path: driverUrls.create, params: formData, start: false });
   const [wasFetched, setWasFetched] = useState(false);
@@ -64,12 +65,13 @@ const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
     if (wasFetched) {
       if (!error) {
         setIsOpen(false);
+        refetchDrivers();
         toast.success('Driver added successfully!');
       } else {
         toast.error(`Failed to add driver! ${error}`);
       }
     }
-  }, [error, wasFetched, setIsOpen]);
+  }, [error, wasFetched, setIsOpen, refetchDrivers]);
 
   return (
     <FormDialog isOpen={isOpen} setIsOpen={setIsOpen} title="Add Driver" handleSubmit={handleSubmit}>
