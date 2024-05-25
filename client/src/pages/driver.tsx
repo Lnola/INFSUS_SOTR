@@ -10,12 +10,19 @@ const DriverPage = () => {
   const { fetch, ...paginationProps } = usePagination<Driver[]>(driverUrls.get);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
+  const handleEdit = (id: number) => () => {
+    console.log('Edit', id);
+  };
+  const handleDelete = (id: number) => () => {
+    console.log('Delete', id);
+  };
+
   return (
     <>
       <Button variant="contained" onClick={() => setIsAddDialogOpen(true)}>
         Add Driver
       </Button>
-      <DriverList {...paginationProps} />
+      <DriverList {...paginationProps} handleEdit={handleEdit} handleDelete={handleDelete} />
       {isAddDialogOpen && <DriverAdd isOpen={isAddDialogOpen} setIsOpen={setIsAddDialogOpen} refetchDrivers={fetch} />}
     </>
   );
