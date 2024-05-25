@@ -3,9 +3,9 @@ import { useGet } from './useGet';
 import { PaginatedResponse } from '@/api/helpers';
 
 const usePagination = <T>(path: string) => {
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 1 });
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 5 });
 
-  const { data, isLoading, error } = useGet<PaginatedResponse<T>>({ path, params: paginationModel });
+  const { fetch, data, isLoading, error } = useGet<PaginatedResponse<T>>({ path, params: paginationModel });
 
   const countRef = useRef(data?.count || 0);
   const count = useMemo(() => {
@@ -13,7 +13,7 @@ const usePagination = <T>(path: string) => {
     return countRef.current;
   }, [data?.count]);
 
-  return { data: data?.items, count, isLoading, error, paginationModel, setPaginationModel };
+  return { fetch, data: data?.items, count, isLoading, error, paginationModel, setPaginationModel };
 };
 
 export default usePagination;
