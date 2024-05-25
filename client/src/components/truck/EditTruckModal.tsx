@@ -3,12 +3,18 @@ import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 import React from 'react';
 import ModalActions from '@/components/common/ModalActions';
-import {StyledForm, StyledModal, StyledModalContainer } from '@/components/common/styled';
-import Truck from "@/models/Truck";
+import { StyledForm, StyledModal, StyledModalContainer } from '@/components/common/styled/StyledModal';
+import Truck from '@/models/truck';
 
-
-const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truck: Truck | undefined, setShowEditModal: (show: boolean) => void, setShowSuccessSnackbar: (show: boolean) => void}) => {
-
+const EditTruckModal = ({
+  truck,
+  setShowEditModal,
+  setShowSuccessSnackbar,
+}: {
+  truck: Truck | undefined;
+  setShowEditModal: (show: boolean) => void;
+  setShowSuccessSnackbar: (show: boolean) => void;
+}) => {
   const [formData, setFormData] = useState({
     registration: truck?.registration || '',
     makeYear: truck?.makeYear || '',
@@ -35,13 +41,13 @@ const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truc
     });
 
     if (response.ok) {
-      setSnackbarStatus('success')
-      setSnackbarText('Truck added successfully!')
-      setShowSuccessSnackbar(true)
+      setSnackbarStatus('success');
+      setSnackbarText('Truck added successfully!');
+      setShowSuccessSnackbar(true);
       setShowEditModal(false);
     } else {
-      setSnackbarStatus('error')
-      setSnackbarText('Action was not successful!')
+      setSnackbarStatus('error');
+      setSnackbarText('Action was not successful!');
       setOpen(true);
     }
   };
@@ -54,12 +60,13 @@ const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truc
     setOpen(false);
   };
 
-
   return (
     <StyledModalContainer>
       <StyledModal>
-        <div style={{height: '100%'}}>
-          <p style={{textAlign: 'center', margin: '0.75em'}}><strong>EDIT TRUCK</strong></p>
+        <div style={{ height: '100%' }}>
+          <p style={{ textAlign: 'center', margin: '0.75em' }}>
+            <strong>EDIT TRUCK</strong>
+          </p>
           <StyledForm onSubmit={handleSubmit}>
             <div>
               <div>
@@ -76,29 +83,29 @@ const EditTruckModal = ({truck, setShowEditModal, setShowSuccessSnackbar}: {truc
               </div>
               <div>
                 <label>Reservoir Capacity: </label>
-                <input type="number" name="reservoirCapacity" value={formData.reservoirCapacity} onChange={handleChange} />
+                <input
+                  type="number"
+                  name="reservoirCapacity"
+                  value={formData.reservoirCapacity}
+                  onChange={handleChange}
+                />
               </div>
               <div>
                 <label>Horsepower: </label>
                 <input type="number" name="horsepower" value={formData.horsepower} onChange={handleChange} />
               </div>
             </div>
-            <ModalActions handleClose={setShowEditModal}/>
+            <ModalActions handleClose={setShowEditModal} />
           </StyledForm>
         </div>
       </StyledModal>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity={snackbarStatus}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
+        <Alert onClose={handleClose} severity={snackbarStatus} variant="filled" sx={{ width: '100%' }}>
           {snackbarText}
         </Alert>
       </Snackbar>
     </StyledModalContainer>
-  )
-}
+  );
+};
 
 export default EditTruckModal;

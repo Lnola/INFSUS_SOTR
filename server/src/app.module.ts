@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import databaseConfig from 'config/database.config';
+import { DriverModule } from 'driver/driver.module';
 import { HealthController } from 'health.controller';
 import { DatabaseModule } from 'shared/database/database.module';
 import { TruckModule } from 'truck/truck.module';
@@ -12,7 +13,7 @@ const GlobalConfigModule = ConfigModule.forRoot({
 });
 
 @Module({
-  imports: [GlobalConfigModule, DatabaseModule, CompanyLocationModule, TruckModule],
+  imports: [GlobalConfigModule, DatabaseModule, CompanyLocationModule, TruckModule, DriverModule],
   controllers: [HealthController],
 })
 export class AppModule {}
