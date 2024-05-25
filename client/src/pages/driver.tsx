@@ -1,6 +1,8 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { driverUrls } from '@/api';
+import { removeDriver } from '@/api/driver';
 import DriverAdd from '@/components/driver/DriverAdd';
 import DriverList from '@/components/driver/DriverList';
 import usePagination from '@/hooks/usePagination';
@@ -13,8 +15,14 @@ const DriverPage = () => {
   const handleEdit = (id: number) => () => {
     console.log('Edit', id);
   };
-  const handleDelete = (id: number) => () => {
-    console.log('Delete', id);
+  const handleDelete = async (id: number) => {
+    try {
+      await removeDriver(id);
+      toast.success('Driver deleted');
+      fetch();
+    } catch (error) {
+      toast.error('Failed to delete driver');
+    }
   };
 
   return (
