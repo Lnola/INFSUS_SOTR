@@ -12,7 +12,7 @@ export class TrailerService {
     private trailerRepository: EntityRepository<Trailer>,
   ) {}
 
-  private em = this.trailerRepository.getEntityManager()
+  private em = this.trailerRepository.getEntityManager();
 
   async find({ page, pageSize }: PaginationParams) {
     const paginationOptions = {
@@ -27,19 +27,19 @@ export class TrailerService {
     return this.trailerRepository.findOne(id);
   }
 
-  async create(trailerDto: TrailerDto){
+  async create(trailerDto: TrailerDto) {
     const trailer = new Trailer(
       trailerDto.registration,
       trailerDto.productionYear,
       Number(trailerDto.palletCapacity),
       Number(trailerDto.length),
-    )
-    await this.em.persist(trailer).flush()
-    return trailer.id
+    );
+    await this.em.persist(trailer).flush();
+    return trailer.id;
   }
 
-  async update(id: number, trailerDto: TrailerDto){
-    const savedTrailer = await this.trailerRepository.findOne(id)
+  async update(id: number, trailerDto: TrailerDto) {
+    const savedTrailer = await this.trailerRepository.findOne(id);
     if (!savedTrailer) {
       throw new NotFoundException(`Trailer with ID ${id} not found`);
     }
@@ -48,11 +48,11 @@ export class TrailerService {
       trailerDto.productionYear,
       Number(trailerDto.palletCapacity),
       Number(trailerDto.length),
-    )
-    wrap(savedTrailer).assign(trailer)
-    await this.em.flush()
+    );
+    wrap(savedTrailer).assign(trailer);
+    await this.em.flush();
 
-    return id
+    return id;
   }
 
   async remove(id: number) {
@@ -61,7 +61,6 @@ export class TrailerService {
       throw new NotFoundException(`Trailer with ID ${id} not found`);
     }
     await this.em.removeAndFlush(trailer);
-    return id
+    return id;
   }
 }
-

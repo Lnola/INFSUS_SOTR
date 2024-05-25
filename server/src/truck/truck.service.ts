@@ -12,7 +12,7 @@ export class TruckService {
     private truckRepository: EntityRepository<Truck>,
   ) {}
 
-  private em = this.truckRepository.getEntityManager()
+  private em = this.truckRepository.getEntityManager();
 
   async find({ page, pageSize }: PaginationParams) {
     const paginationOptions = {
@@ -27,19 +27,19 @@ export class TruckService {
     return this.truckRepository.findOne(id);
   }
 
-  async create(truckDto: TruckDto){
+  async create(truckDto: TruckDto) {
     const truck = new Truck(
       truckDto.registration,
       truckDto.productionYear,
       Number(truckDto.tankCapacity),
       Number(truckDto.horsepower),
-    )
-    await this.em.persist(truck).flush()
-    return truck.id
+    );
+    await this.em.persist(truck).flush();
+    return truck.id;
   }
 
-  async update(id: number, truckDto: TruckDto){
-    const savedTruck = await this.truckRepository.findOne(id)
+  async update(id: number, truckDto: TruckDto) {
+    const savedTruck = await this.truckRepository.findOne(id);
     if (!savedTruck) {
       throw new NotFoundException(`Truck with ID ${id} not found`);
     }
@@ -48,11 +48,11 @@ export class TruckService {
       truckDto.productionYear,
       Number(truckDto.tankCapacity),
       Number(truckDto.horsepower),
-    )
-    wrap(savedTruck).assign(truck)
-    await this.em.flush()
+    );
+    wrap(savedTruck).assign(truck);
+    await this.em.flush();
 
-    return id
+    return id;
   }
 
   async remove(id: number) {
@@ -61,7 +61,6 @@ export class TruckService {
       throw new NotFoundException(`Truck with ID ${id} not found`);
     }
     await this.em.removeAndFlush(truck);
-    return id
+    return id;
   }
 }
-

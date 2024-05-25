@@ -29,6 +29,6 @@ export class TrailerController {
 
   @Delete(':id')
   delete(@Param('id') id: number) {
-    return this.trailerService.remove(id)
+    return this.trailerService.remove(id);
   }
 }
