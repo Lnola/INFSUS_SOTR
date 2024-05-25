@@ -1,8 +1,8 @@
 type Trailer = {
   id: number;
   registration: string;
-  makeYear: string;
-  noOfPalletSpaces: number;
+  productionYear: string;
+  palletCapacity: number;
   length: number;
 };
 

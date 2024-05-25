@@ -41,9 +41,24 @@ const EditButton = ({
   );
 };
 
-const DeleteButton = ({ id, onDelete}: { id: number , onDelete: (id: number) => void}) => {
+const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar }) => {
+  const handleDelete = async (id: number) => {
+    const response = await fetch(`/api/trucks/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      setShowSuccessSnackbar(true);
+    } else {
+      setShowErrorSnackbar(true);
+    }
+  };
+
   return (
-    <Button variant="outlined" color="error" onClick={() => onDelete(id) }>
+    <Button variant="outlined" color="error" onClick={() => handleDelete(id)}>
       Delete
     </Button>
   );
@@ -70,7 +85,7 @@ const TruckList = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'registration', headerName: 'Registration', width: 130 },
-    { field: 'productionYear', headerName: 'Make year', type: 'number', width: 80 },
+    { field: 'productionYear', headerName: 'Production year', type: 'number', width: 80 },
     { field: 'tankCapacity', headerName: 'Tank', type: 'number', width: 90 },
     { field: 'horsepower', headerName: 'Horsepower', type: 'number', width: 90 },
     {
@@ -89,19 +104,18 @@ const TruckList = () => {
       width: 120,
       renderCell: params => (
         <StyledContainer style={{ alignItems: 'center', width: '100%', height: '100%', margin: '0px' }}>
-          <DeleteButton id={params.row.id} onDelete={handleDelete} />
+          <DeleteButton id={params.row.id} setShowErrorSnackbar={setShowErrorSnackbar} setShowSuccessSnackbar={setShowSuccessSnackbar}/>
         </StyledContainer>
       ),
     },
   ];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Truck>(
-    "/api/trucks",
-  );
+  const { fetch, data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Truck>('/api/trucks');
 
-  console.log(data?.length)
-
+  useEffect(() => {
+    fetch()
+  }, [showSuccessSnackbar, fetch])
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
@@ -114,29 +128,6 @@ const TruckList = () => {
     setShowSuccessSnackbar(false);
     setShowErrorSnackbar(false);
   };
-
-  const handleDelete = async (id: number) => {
-    const response = await fetch(`/api/trucks/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
-    if (response.ok) {
-      setShowSuccessSnackbar(true)
-    } else {
-      setShowErrorSnackbar(true)
-    }
-  };
-
-  useEffect( () => {
-    setTimeout(() => {
-      if (showSuccessSnackbar == true) {
-        window.location.reload();
-      }
-    }, 1000)
-  }, [showSuccessSnackbar])
 
   return (
     <>
@@ -173,7 +164,7 @@ const TruckList = () => {
         </div>
       </StyledContainer>
       {/* Edit Modal */}
-      {showEditModal && data &&(
+      {showEditModal && data && (
         <EditTruckModal
           truck={data?.find(truck => truck.id == editTruckId)}
           setShowEditModal={setShowEditModal}
