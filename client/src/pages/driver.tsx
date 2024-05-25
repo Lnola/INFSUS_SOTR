@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { driverUrls } from '@/api';
@@ -14,6 +15,8 @@ const DriverPage = () => {
   const [driver, setDriver] = useState<Driver>();
 
   const handleEdit = (driver: Driver) => {
+    driver.employmentStartDate = format(driver.employmentStartDate, 'yyyy-MM-dd');
+    driver.employmentEndDate = driver.employmentEndDate && format(driver.employmentEndDate, 'yyyy-MM-dd');
     setDriver(driver);
     setIsAddDialogOpen(true);
   };
