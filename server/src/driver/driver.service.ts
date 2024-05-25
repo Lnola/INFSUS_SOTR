@@ -49,4 +49,10 @@ export class DriverService {
     driver.employmentEndDate = updateDriverDto.employmentEndDate;
     return await this.driverRepository.getEntityManager().persistAndFlush(driver);
   }
+
+  async delete(id: number) {
+    const driver = await this.driverRepository.findOne(id);
+    if (!driver) throw new NotFoundException('Driver not found!');
+    return this.driverRepository.getEntityManager().removeAndFlush(driver);
+  }
 }
