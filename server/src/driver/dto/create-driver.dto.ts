@@ -1,4 +1,5 @@
 import { IsDateString, IsNotEmpty, IsOptional, IsPhoneNumber } from 'class-validator';
+import { IsBeforeDate } from 'shared/validators/is-before-date.validator';
 
 export class CreateDriverDto {
   @IsNotEmpty()
@@ -17,5 +18,6 @@ export class CreateDriverDto {
 
   @IsOptional()
   @IsDateString()
+  @IsBeforeDate('employmentStartDate')
   employmentEndDate?: Date;
 }
