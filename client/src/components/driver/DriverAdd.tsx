@@ -6,6 +6,25 @@ import { driverUrls } from '@/api';
 import FormDialog from '@/components/common/FormDialog';
 import { usePost } from '@/hooks/usePost';
 
+const validate = (formData, setFormData) => {
+  let isValid = true;
+  if (formData.employmentEndDate && new Date(formData.employmentStartDate) > new Date(formData.employmentEndDate)) {
+    setFormData(prev => ({ ...prev, employmentEndDateError: 'End Date must be after Start Date' }));
+    isValid = false;
+  } else {
+    setFormData(prev => ({ ...prev, employmentEndDateError: '' }));
+  }
+
+  if (formData.contactNumber.length < 9 || formData.contactNumber.length > 11) {
+    setFormData(prev => ({ ...prev, contactNumberError: 'Contact number must be between 9 and 11 digits' }));
+    isValid = false;
+  } else {
+    setFormData(prev => ({ ...prev, contactNumberError: '' }));
+  }
+
+  return isValid;
+};
+
 const StyledDatePickerContainer = styled.div`
   display: flex;
   align-items: center;
@@ -51,18 +70,7 @@ const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers }: Props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!event.currentTarget.reportValidity()) return;
-
-    if (formData.employmentEndDate && new Date(formData.employmentStartDate) > new Date(formData.employmentEndDate)) {
-      setFormData(prev => ({ ...prev, employmentEndDateError: 'End Date must be after Start Date' }));
-      return;
-    }
-
-    if (formData.contactNumber.length < 9 || formData.contactNumber.length > 11) {
-      setFormData(prev => ({ ...prev, contactNumberError: 'Contact number must be between 9 and 11 digits' }));
-      return;
-    }
-
+    if (!event.currentTarget.reportValidity() && !validate(formData, setFormData)) return;
     await create();
     setWasFetched(true);
   };
