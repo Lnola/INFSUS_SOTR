@@ -52,8 +52,8 @@ const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers }: Props) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!event.currentTarget.reportValidity()) return;
-    if (formData.contactNumber.length < 10 || formData.contactNumber.length > 12) {
-      setFormData(prev => ({ ...prev, contactNumberError: 'Contact number must be between 10 and 12 digits' }));
+    if (formData.contactNumber.length < 9 || formData.contactNumber.length > 11) {
+      setFormData(prev => ({ ...prev, contactNumberError: 'Contact number must be between 9 and 11 digits' }));
       return;
     }
 
