@@ -18,7 +18,6 @@ export class TrailerService {
     const paginationOptions = {
       offset: page * pageSize,
       limit: pageSize,
-      orderBy: { id: 'ASC' },
     };
     const [items, count] = await this.trailerRepository.findAndCount({}, paginationOptions);
     return { items, count };

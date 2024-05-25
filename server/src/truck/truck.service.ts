@@ -18,7 +18,6 @@ export class TruckService {
     const paginationOptions = {
       offset: page * pageSize,
       limit: pageSize,
-      orderBy: { id: 'ASC' },
     };
     const [items, count] = await this.truckRepository.findAndCount({}, paginationOptions);
     return { items, count };
