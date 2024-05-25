@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { driverUrls } from '@/api';
 import FormDialog from '@/components/common/FormDialog';
-import { usePost } from '@/hooks/usePost';
+import useFetch from '@/hooks/useFetch';
 import Driver from '@/models/driver';
 
 const validate = (formData, setFormData) => {
@@ -62,7 +62,8 @@ type Props = {
 
 const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers, driver }: Props) => {
   const [formData, setFormData] = useState({ ...initialFormData, ...driver });
-  const { fetch: create, error } = usePost<any>({
+  const { fetch: create, error } = useFetch<any>({
+    method: !driver ? 'POST' : 'PUT',
     path: !driver || !driver.id ? driverUrls.create : driverUrls.update(driver.id!),
     params: { ...formData },
     start: false,
