@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { driverUrls } from '@/api';
 import FormDialog from '@/components/common/FormDialog';
 import { usePost } from '@/hooks/usePost';
+import Driver from '@/models/driver';
 
 const validate = (formData, setFormData) => {
   let isValid = true;
@@ -55,11 +56,17 @@ type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   refetchDrivers: () => void;
+  initFormData?: typeof initialFormData;
+  driver?: Driver;
 };
 
-const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers }: Props) => {
-  const [formData, setFormData] = useState(initialFormData);
-  const { fetch: create, error } = usePost<any>({ path: driverUrls.create, params: formData, start: false });
+const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers, driver }: Props) => {
+  const [formData, setFormData] = useState({ ...initialFormData, ...driver });
+  const { fetch: create, error } = usePost<any>({
+    path: !driver || !driver.id ? driverUrls.create : driverUrls.update(driver.id!),
+    params: { ...formData },
+    start: false,
+  });
   const [wasFetched, setWasFetched] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
