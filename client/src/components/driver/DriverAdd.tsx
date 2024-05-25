@@ -70,7 +70,7 @@ const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers }: Props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!event.currentTarget.reportValidity() && !validate(formData, setFormData)) return;
+    if (!event.currentTarget.reportValidity() || !validate(formData, setFormData)) return;
     await create();
     setWasFetched(true);
   };
