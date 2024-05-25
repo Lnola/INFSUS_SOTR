@@ -21,15 +21,21 @@ type Props = {
   setIsOpen: (isOpen: boolean) => void;
 };
 
-const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    contactNumber: '',
-    employmentStartDate: '',
-    employmentEndDate: '',
-  });
+const initialFormData = {
+  firstName: '',
+  firstNameError: '',
+  lastName: '',
+  lastNameError: '',
+  contactNumber: '',
+  contactNumberError: '',
+  employmentStartDate: '',
+  empoloymentStartDateError: '',
+  employmentEndDate: '',
+  employmentEndDateError: '',
+};
 
+const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
+  const [formData, setFormData] = useState(initialFormData);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -38,13 +44,18 @@ const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(formData);
+    if (!event.currentTarget.reportValidity()) return;
+    if (formData.contactNumber.length < 10 || formData.contactNumber.length > 12) {
+      setFormData(prev => ({ ...prev, contactNumberError: 'Contact number must be between 10 and 12 digits' }));
+      return;
+    }
     setIsOpen(false);
   };
 
   return (
     <FormDialog isOpen={isOpen} setIsOpen={setIsOpen} title="Add Driver" handleSubmit={handleSubmit}>
       <TextField
+        required
         name="firstName"
         label="First Name"
         variant="standard"
@@ -52,6 +63,7 @@ const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
         onChange={handleChange}
       />
       <TextField
+        required
         name="lastName"
         label="Last Name"
         variant="standard"
@@ -59,15 +71,19 @@ const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
         onChange={handleChange}
       />
       <TextField
+        required
         name="contactNumber"
         label="Contact Number"
         variant="standard"
         type="number"
         value={formData.contactNumber}
         onChange={handleChange}
+        error={!!formData.contactNumberError}
+        helperText={formData.contactNumberError}
       />
       <StyledDatePickerContainer>
         <TextField
+          required
           InputLabelProps={{ shrink: true }}
           name="employmentStartDate"
           label="Employment Start Date"
