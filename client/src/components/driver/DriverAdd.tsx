@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { driverUrls } from '@/api';
 import FormDialog from '@/components/common/FormDialog';
 import { usePost } from '@/hooks/usePost';
@@ -38,7 +39,8 @@ const initialFormData = {
 
 const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
   const [formData, setFormData] = useState(initialFormData);
-  const { fetch: create } = usePost<any>({ path: driverUrls.create, params: formData, start: false });
+  const { fetch: create, error } = usePost<any>({ path: driverUrls.create, params: formData, start: false });
+  const [wasFetched, setWasFetched] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -53,9 +55,21 @@ const DriverAdd = ({ isOpen, setIsOpen }: Props) => {
       setFormData(prev => ({ ...prev, contactNumberError: 'Contact number must be between 10 and 12 digits' }));
       return;
     }
+
     await create();
-    setIsOpen(false);
+    setWasFetched(true);
   };
+
+  useEffect(() => {
+    if (wasFetched) {
+      if (!error) {
+        setIsOpen(false);
+        toast.success('Driver added successfully!');
+      } else {
+        toast.error(`Failed to add driver! ${error}`);
+      }
+    }
+  }, [error, wasFetched, setIsOpen]);
 
   return (
     <FormDialog isOpen={isOpen} setIsOpen={setIsOpen} title="Add Driver" handleSubmit={handleSubmit}>
