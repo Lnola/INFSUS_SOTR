@@ -8,7 +8,7 @@ export class CreateDriverDto {
   lastName: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber('US')
+  @IsPhoneNumber('HR')
   contactNumber: string;
 
   @IsNotEmpty()
