@@ -52,6 +52,12 @@ const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers }: Props) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!event.currentTarget.reportValidity()) return;
+
+    if (formData.employmentEndDate && new Date(formData.employmentStartDate) > new Date(formData.employmentEndDate)) {
+      setFormData(prev => ({ ...prev, employmentEndDateError: 'End Date must be after Start Date' }));
+      return;
+    }
+
     if (formData.contactNumber.length < 9 || formData.contactNumber.length > 11) {
       setFormData(prev => ({ ...prev, contactNumberError: 'Contact number must be between 9 and 11 digits' }));
       return;
@@ -121,6 +127,8 @@ const DriverAdd = ({ isOpen, setIsOpen, refetchDrivers }: Props) => {
           type="date"
           value={formData.employmentEndDate}
           onChange={handleChange}
+          error={!!formData.employmentEndDateError}
+          helperText={formData.employmentEndDateError}
         />
       </StyledDatePickerContainer>
     </FormDialog>
