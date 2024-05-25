@@ -1,5 +1,5 @@
-import styled from "@emotion/styled"
-import { Button } from "@mui/material"
+import styled from '@emotion/styled';
+import { Button } from '@mui/material';
 
 const StyledButtonContainer = styled.div`
   display: flex;
@@ -8,20 +8,23 @@ const StyledButtonContainer = styled.div`
   padding-left: 20%;
   padding-right: 20%;
   padding-bottom: 20px;
-`
+`;
 
 type Props = {
-  handleClose: (args: any) => void
-}
+  handleClose: (args: any) => void;
+};
 
-const ModalActions = ({handleClose}: Props) => {
-
-  return(
+const ModalActions = ({ handleClose }: Props) => {
+  return (
     <StyledButtonContainer>
-      <Button type="submit" variant='contained' >Save</Button>
-      <Button type="button" variant='outlined' onClick={() => handleClose(false)}>Close</Button>
+      <Button type="submit" variant="contained">
+        Save
+      </Button>
+      <Button type="button" variant="outlined" onClick={() => handleClose(false)}>
+        Close
+      </Button>
     </StyledButtonContainer>
-  )
-}
+  );
+};
 
-export default ModalActions
+export default ModalActions;
