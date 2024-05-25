@@ -7,8 +7,20 @@ const columns: GridColDef[] = [
   { field: 'firstName', headerName: 'First name', width: 130 },
   { field: 'lastName', headerName: 'Last name', width: 130 },
   { field: 'contactNumber', headerName: 'Contact Number', width: 130 },
-  { field: 'employmentStartDate', headerName: 'Employment Start Date', width: 130, type: 'string' },
-  { field: 'employmentEndDate', headerName: 'Employment End Date', width: 130, type: 'string' },
+  {
+    field: 'employmentStartDate',
+    headerName: 'Employment Start Date',
+    width: 130,
+    type: 'date',
+    valueFormatter: value => new Date(value).toLocaleDateString(),
+  },
+  {
+    field: 'employmentEndDate',
+    headerName: 'Employment End Date',
+    width: 130,
+    type: 'date',
+    valueFormatter: value => new Date(value).toLocaleDateString(),
+  },
 ];
 
 const DriverList = ({ error, data, count, isLoading, paginationModel, setPaginationModel }) => {
