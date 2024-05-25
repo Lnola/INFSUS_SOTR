@@ -1,8 +1,8 @@
 type Truck = {
   id: number;
   registration: string;
-  makeYear: string;
-  reservoirCapacity: number;
+  productionYear: string;
+  tankCapacity: number;
   horsepower: number;
 };
 

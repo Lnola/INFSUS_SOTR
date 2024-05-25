@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import Pagination, { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { TruckDto } from './truck.dto';
 import { TruckService } from './truck.service';
 
@@ -7,8 +8,8 @@ export class TruckController {
   constructor(private readonly truckService: TruckService) {}
 
   @Get()
-  findAll() {
-    return this.truckService.findAll();
+  findAll(@Pagination() pagination: PaginationParams) {
+    return this.truckService.find(pagination);
   }
 
   @Get(':id')

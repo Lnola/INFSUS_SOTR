@@ -1,6 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, wrap } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { PaginationParams } from 'shared/decorators/pagination.decorator';
 import Truck from './entities/truck.entity';
 import { TruckDto } from './truck.dto';
 
@@ -13,8 +14,13 @@ export class TruckService {
 
   private em = this.truckRepository.getEntityManager()
 
-  findAll() {
-    return this.truckRepository.findAll();
+  async find({ page, pageSize }: PaginationParams) {
+    const paginationOptions = {
+      offset: page * pageSize,
+      limit: pageSize,
+    };
+    const [items, count] = await this.truckRepository.findAndCount({}, paginationOptions);
+    return { items, count };
   }
 
   findOne(id: number) {
@@ -24,9 +30,9 @@ export class TruckService {
   async create(truckDto: TruckDto){
     const truck = new Truck(
       truckDto.registration,
-      truckDto.makeYear,
-      truckDto.reservoirCapacity,
-      truckDto.horsepower,
+      truckDto.productionYear,
+      Number(truckDto.tankCapacity),
+      Number(truckDto.horsepower),
     )
     await this.em.persist(truck).flush()
     return truck.id
@@ -39,9 +45,9 @@ export class TruckService {
     }
     const truck = new Truck(
       truckDto.registration,
-      truckDto.makeYear,
-      truckDto.reservoirCapacity,
-      truckDto.horsepower,
+      truckDto.productionYear,
+      Number(truckDto.tankCapacity),
+      Number(truckDto.horsepower),
     )
     wrap(savedTruck).assign(truck)
     await this.em.flush()

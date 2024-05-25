@@ -4,26 +4,26 @@ import { useState } from 'react';
 import React from 'react';
 import ModalActions from '@/components/common/ModalActions';
 import { StyledForm, StyledModal, StyledModalContainer } from '@/components/common/styled/StyledModal';
-import Truck from '@/models/truck';
+import Trailer from '@/models/trailer';
 
-const EditTruckModal = ({
-  truck,
+const EditTrailerModal = ({
+  trailer,
   setShowEditModal,
   setShowSuccessSnackbar,
   setOnChangeRerender,
   onChangeRerender
 }: {
-  truck: Truck | undefined;
+  trailer: Trailer | undefined;
   setShowEditModal: (show: boolean) => void;
   setShowSuccessSnackbar: (show: boolean) => void;
   setOnChangeRerender: (show: boolean) => void;
   onChangeRerender: boolean;
 }) => {
   const [formData, setFormData] = useState({
-    registration: truck?.registration || '',
-    productionYear: truck?.productionYear || '',
-    tankCapacity: truck?.tankCapacity || 0,
-    horsepower: truck?.horsepower || 0,
+    registration: trailer?.registration || '',
+    productionYear: trailer?.productionYear || '',
+    palletCapacity: trailer?.palletCapacity || 0,
+    length: trailer?.length || 0,
   });
   const [open, setOpen] = React.useState(false);
   const [snackbarStatus, setSnackbarStatus] = React.useState<'error' | 'success' | 'warning'>('warning');
@@ -36,7 +36,7 @@ const EditTruckModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch(`/api/trucks/${truck?.id}`, {
+    const response = await fetch(`/api/trailers/${trailer?.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ const EditTruckModal = ({
 
     if (response.ok) {
       setSnackbarStatus('success');
-      setSnackbarText('Truck edited successfully!');
+      setSnackbarText('Trailer edited successfully!');
       setOnChangeRerender(!onChangeRerender);
       setShowSuccessSnackbar(true);
       setShowEditModal(false);
@@ -70,13 +70,13 @@ const EditTruckModal = ({
       <StyledModal>
         <div style={{ height: '100%' }}>
           <p style={{ textAlign: 'center', margin: '0.75em' }}>
-            <strong>EDIT TRUCK</strong>
+            <strong>EDIT TRAILER</strong>
           </p>
           <StyledForm onSubmit={handleSubmit}>
             <div>
               <div>
                 <label>ID: </label>
-                <input type="text" value={truck?.id} readOnly />
+                <input type="text" value={trailer?.id} readOnly />
               </div>
               <div>
                 <label>Registration: </label>
@@ -87,17 +87,17 @@ const EditTruckModal = ({
                 <input type="number" name="productionYear" value={formData.productionYear} onChange={handleChange} />
               </div>
               <div>
-                <label>Tank Capacity: </label>
+                <label>Pallet Capacity: </label>
                 <input
                   type="number"
-                  name="tankCapacity"
-                  value={formData.tankCapacity}
+                  name="palletCapacity"
+                  value={formData.palletCapacity}
                   onChange={handleChange}
                 />
               </div>
               <div>
-                <label>Horsepower: </label>
-                <input type="number" name="horsepower" value={formData.horsepower} onChange={handleChange} />
+                <label>Length: </label>
+                <input type="number" name="length" value={formData.length} onChange={handleChange} />
               </div>
             </div>
             <ModalActions handleClose={setShowEditModal} />
@@ -113,4 +113,4 @@ const EditTruckModal = ({
   );
 };
 
-export default EditTruckModal;
+export default EditTrailerModal;

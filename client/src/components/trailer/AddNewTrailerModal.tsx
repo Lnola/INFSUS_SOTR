@@ -1,29 +1,26 @@
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { useState } from 'react';
 import React from 'react';
+import { useState } from 'react';
 import ModalActions from '@/components/common/ModalActions';
 import { StyledForm, StyledModal, StyledModalContainer } from '@/components/common/styled/StyledModal';
-import Truck from '@/models/truck';
 
-const EditTruckModal = ({
-  truck,
-  setShowEditModal,
+const EditTrailerModal = ({
+  setShowAddNewModal,
   setShowSuccessSnackbar,
   setOnChangeRerender,
-  onChangeRerender
+  onChangeRerender,
 }: {
-  truck: Truck | undefined;
-  setShowEditModal: (show: boolean) => void;
+  setShowAddNewModal: (show: boolean) => void;
   setShowSuccessSnackbar: (show: boolean) => void;
   setOnChangeRerender: (show: boolean) => void;
   onChangeRerender: boolean;
 }) => {
   const [formData, setFormData] = useState({
-    registration: truck?.registration || '',
-    productionYear: truck?.productionYear || '',
-    tankCapacity: truck?.tankCapacity || 0,
-    horsepower: truck?.horsepower || 0,
+    registration: '',
+    productionYear: '0',
+    palletCapacity: 0,
+    length: 0,
   });
   const [open, setOpen] = React.useState(false);
   const [snackbarStatus, setSnackbarStatus] = React.useState<'error' | 'success' | 'warning'>('warning');
@@ -36,8 +33,8 @@ const EditTruckModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch(`/api/trucks/${truck?.id}`, {
-      method: 'PUT',
+    const response = await fetch('/api/trailers', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -46,10 +43,10 @@ const EditTruckModal = ({
 
     if (response.ok) {
       setSnackbarStatus('success');
-      setSnackbarText('Truck edited successfully!');
+      setSnackbarText('Trailer added successfully!');
       setOnChangeRerender(!onChangeRerender);
       setShowSuccessSnackbar(true);
-      setShowEditModal(false);
+      setShowAddNewModal(false);
     } else {
       setSnackbarStatus('error');
       setSnackbarText('Action was not successful!');
@@ -70,14 +67,10 @@ const EditTruckModal = ({
       <StyledModal>
         <div style={{ height: '100%' }}>
           <p style={{ textAlign: 'center', margin: '0.75em' }}>
-            <strong>EDIT TRUCK</strong>
+            <strong>ADD NEW TRAILER</strong>
           </p>
           <StyledForm onSubmit={handleSubmit}>
             <div>
-              <div>
-                <label>ID: </label>
-                <input type="text" value={truck?.id} readOnly />
-              </div>
               <div>
                 <label>Registration: </label>
                 <input type="text" name="registration" value={formData.registration} onChange={handleChange} />
@@ -87,20 +80,20 @@ const EditTruckModal = ({
                 <input type="number" name="productionYear" value={formData.productionYear} onChange={handleChange} />
               </div>
               <div>
-                <label>Tank Capacity: </label>
+                <label>Pallet Capacity: </label>
                 <input
                   type="number"
-                  name="tankCapacity"
-                  value={formData.tankCapacity}
+                  name="palletCapacity"
+                  value={formData.palletCapacity}
                   onChange={handleChange}
                 />
               </div>
               <div>
-                <label>Horsepower: </label>
-                <input type="number" name="horsepower" value={formData.horsepower} onChange={handleChange} />
+                <label>Length: </label>
+                <input type="number" name="length" value={formData.length} onChange={handleChange} />
               </div>
             </div>
-            <ModalActions handleClose={setShowEditModal} />
+            <ModalActions handleClose={setShowAddNewModal} />
           </StyledForm>
         </div>
       </StyledModal>
@@ -113,4 +106,4 @@ const EditTruckModal = ({
   );
 };
 
-export default EditTruckModal;
+export default EditTrailerModal;
