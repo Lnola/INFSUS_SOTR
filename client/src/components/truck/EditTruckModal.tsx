@@ -10,10 +10,14 @@ const EditTruckModal = ({
   truck,
   setShowEditModal,
   setShowSuccessSnackbar,
+  setOnChangeRerender,
+  onChangeRerender
 }: {
   truck: Truck | undefined;
   setShowEditModal: (show: boolean) => void;
   setShowSuccessSnackbar: (show: boolean) => void;
+  setOnChangeRerender: (show: boolean) => void;
+  onChangeRerender: boolean;
 }) => {
   const [formData, setFormData] = useState({
     registration: truck?.registration || '',
@@ -43,6 +47,7 @@ const EditTruckModal = ({
     if (response.ok) {
       setSnackbarStatus('success');
       setSnackbarText('Truck edited successfully!');
+      setOnChangeRerender(!onChangeRerender);
       setShowSuccessSnackbar(true);
       setShowEditModal(false);
     } else {

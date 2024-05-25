@@ -10,10 +10,14 @@ const EditTrailerModal = ({
   trailer,
   setShowEditModal,
   setShowSuccessSnackbar,
+  setOnChangeRerender,
+  onChangeRerender
 }: {
   trailer: Trailer | undefined;
   setShowEditModal: (show: boolean) => void;
   setShowSuccessSnackbar: (show: boolean) => void;
+  setOnChangeRerender: (show: boolean) => void;
+  onChangeRerender: boolean;
 }) => {
   const [formData, setFormData] = useState({
     registration: trailer?.registration || '',
@@ -43,6 +47,7 @@ const EditTrailerModal = ({
     if (response.ok) {
       setSnackbarStatus('success');
       setSnackbarText('Trailer edited successfully!');
+      setOnChangeRerender(!onChangeRerender);
       setShowSuccessSnackbar(true);
       setShowEditModal(false);
     } else {

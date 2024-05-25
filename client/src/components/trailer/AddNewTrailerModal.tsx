@@ -8,9 +8,13 @@ import { StyledForm, StyledModal, StyledModalContainer } from '@/components/comm
 const EditTrailerModal = ({
   setShowAddNewModal,
   setShowSuccessSnackbar,
+  setOnChangeRerender,
+  onChangeRerender,
 }: {
   setShowAddNewModal: (show: boolean) => void;
   setShowSuccessSnackbar: (show: boolean) => void;
+  setOnChangeRerender: (show: boolean) => void;
+  onChangeRerender: boolean;
 }) => {
   const [formData, setFormData] = useState({
     registration: '',
@@ -40,6 +44,7 @@ const EditTrailerModal = ({
     if (response.ok) {
       setSnackbarStatus('success');
       setSnackbarText('Trailer added successfully!');
+      setOnChangeRerender(!onChangeRerender);
       setShowSuccessSnackbar(true);
       setShowAddNewModal(false);
     } else {

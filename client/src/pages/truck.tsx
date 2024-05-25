@@ -41,7 +41,7 @@ const EditButton = ({
   );
 };
 
-const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar }) => {
+const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar, setOnChangeRerender, onChangeRerender }) => {
   const handleDelete = async (id: number) => {
     const response = await fetch(`/api/trucks/${id}`, {
       method: 'DELETE',
@@ -52,6 +52,7 @@ const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar }) => {
 
     if (response.ok) {
       setShowSuccessSnackbar(true);
+      setOnChangeRerender(!onChangeRerender);
     } else {
       setShowErrorSnackbar(true);
     }
@@ -80,6 +81,7 @@ const TruckList = () => {
   const [showAddNewModal, setShowAddNewModal] = useState(false);
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+  const [onChangeRerender, setOnChangeRerender] = useState(false);
 
 
   const columns: GridColDef[] = [
@@ -104,7 +106,7 @@ const TruckList = () => {
       width: 120,
       renderCell: params => (
         <StyledContainer style={{ alignItems: 'center', width: '100%', height: '100%', margin: '0px' }}>
-          <DeleteButton id={params.row.id} setShowErrorSnackbar={setShowErrorSnackbar} setShowSuccessSnackbar={setShowSuccessSnackbar}/>
+          <DeleteButton id={params.row.id} setShowErrorSnackbar={setShowErrorSnackbar} setShowSuccessSnackbar={setShowSuccessSnackbar} setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender}/>
         </StyledContainer>
       ),
     },
@@ -115,7 +117,7 @@ const TruckList = () => {
 
   useEffect(() => {
     fetch()
-  }, [showSuccessSnackbar, fetch])
+  }, [onChangeRerender, fetch])
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
@@ -169,11 +171,13 @@ const TruckList = () => {
           truck={data?.find(truck => truck.id == editTruckId)}
           setShowEditModal={setShowEditModal}
           setShowSuccessSnackbar={setShowSuccessSnackbar}
+          setOnChangeRerender={setOnChangeRerender}
+          onChangeRerender={onChangeRerender}
         />
       )}
       {/* Add new Modal */}
       {showAddNewModal && (
-        <AddNewTruckModal setShowAddNewModal={setShowAddNewModal} setShowSuccessSnackbar={setShowSuccessSnackbar} />
+        <AddNewTruckModal setShowAddNewModal={setShowAddNewModal} setShowSuccessSnackbar={setShowSuccessSnackbar} setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender} />
       )}
 
       <Snackbar open={showSuccessSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
