@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import Pagination, { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { DriverService } from './driver.service';
+import { CreateDriverDto } from './dto/create-driver.dto';
 
 @Controller('drivers')
 export class DriverController {
@@ -11,8 +12,20 @@ export class DriverController {
     return this.driverService.find(pagination);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.driverService.findOne(+id);
+  @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
+  create(@Body('params') createDriverDto: CreateDriverDto) {
+    return this.driverService.create(createDriverDto);
+  }
+
+  @Put(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  update(@Param('id') id: number, @Body('params') updateDriverDto: CreateDriverDto) {
+    return this.driverService.update(id, updateDriverDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.driverService.delete(id);
   }
 }

@@ -40,8 +40,8 @@ class Driver extends BaseEntity {
     this.firstName = firstName;
     this.lastName = lastName;
     this.contactNumber = contactNumber;
-    this.employmentStartDate = employmentStartDate;
-    this.employmentEndDate = employmentEndDate;
+    this.employmentStartDate = new Date(employmentStartDate);
+    if (!!employmentEndDate) this.employmentEndDate = new Date(employmentEndDate);
   }
 }
 

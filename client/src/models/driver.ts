@@ -3,8 +3,8 @@ type Driver = {
   firstName: string;
   lastName: string;
   contactNumber: string;
-  employmentStartDate: Date;
-  employmentEndDate?: Date;
+  employmentStartDate: string;
+  employmentEndDate?: string;
 };
 
 export default Driver;

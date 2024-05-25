@@ -13,13 +13,14 @@ type PaginationParams = {
 export type BaseProps = {
   path: string;
   params?: PaginationParams | object;
+  start?: boolean;
 };
 
 type Props = BaseProps & {
   method: Method;
 };
 
-const useFetch = <T>({ method, path, params }: Props) => {
+const useFetch = <T>({ method, path, params, start = true }: Props) => {
   const [data, setData] = useState<T | null>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,8 +42,9 @@ const useFetch = <T>({ method, path, params }: Props) => {
   }, [method, path, params]);
 
   useEffect(() => {
+    if (!start) return;
     fetch();
-  }, [fetch]);
+  }, [start, fetch]);
 
   return { fetch, data, isLoading, error };
 };
