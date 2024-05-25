@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import Pagination, { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { DriverService } from './driver.service';
+import { CreateDriverDto } from './dto/create-driver.dto';
 
 @Controller('drivers')
 export class DriverController {
@@ -11,8 +12,8 @@ export class DriverController {
     return this.driverService.find(pagination);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.driverService.findOne(+id);
+  @Post()
+  create(@Body('params') createDriverDto: CreateDriverDto) {
+    return this.driverService.create(createDriverDto);
   }
 }
