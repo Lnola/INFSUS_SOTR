@@ -1,9 +1,15 @@
+import styled from '@emotion/styled';
 import { FormControl } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+
+const StyledFormControl = styled(FormControl)`
+  gap: 1rem;
+  margin-bottom: 2rem;
+`;
 
 type Props = {
   title: string;
@@ -23,7 +29,7 @@ const FormDialog = ({ title, isOpen, setIsOpen, children, handleSubmit }: Props)
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit} id="dialog-form">
-          <FormControl fullWidth>{children}</FormControl>
+          <StyledFormControl fullWidth>{children}</StyledFormControl>
         </form>
       </DialogContent>
       <DialogActions>
