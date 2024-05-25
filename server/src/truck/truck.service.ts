@@ -31,8 +31,8 @@ export class TruckService {
     const truck = new Truck(
       truckDto.registration,
       truckDto.productionYear,
-      truckDto.tankCapacity,
-      truckDto.horsepower,
+      Number(truckDto.tankCapacity),
+      Number(truckDto.horsepower),
     )
     await this.em.persist(truck).flush()
     return truck.id
@@ -46,8 +46,8 @@ export class TruckService {
     const truck = new Truck(
       truckDto.registration,
       truckDto.productionYear,
-      truckDto.tankCapacity,
-      truckDto.horsepower,
+      Number(truckDto.tankCapacity),
+      Number(truckDto.horsepower),
     )
     wrap(savedTruck).assign(truck)
     await this.em.flush()

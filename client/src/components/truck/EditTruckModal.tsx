@@ -17,8 +17,8 @@ const EditTruckModal = ({
 }) => {
   const [formData, setFormData] = useState({
     registration: truck?.registration || '',
-    makeYear: truck?.productionYear || '',
-    reservoirCapacity: truck?.tankCapacity || 0,
+    productionYear: truck?.productionYear || '',
+    tankCapacity: truck?.tankCapacity || 0,
     horsepower: truck?.horsepower || 0,
   });
   const [open, setOpen] = React.useState(false);
@@ -32,17 +32,17 @@ const EditTruckModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch('/api/trucks', {
-      method: 'POST',
+    const response = await fetch(`/api/trucks/${truck?.id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: truck?.id, ...formData }),
+      body: JSON.stringify({ ...formData }),
     });
 
     if (response.ok) {
       setSnackbarStatus('success');
-      setSnackbarText('Truck added successfully!');
+      setSnackbarText('Truck edited successfully!');
       setShowSuccessSnackbar(true);
       setShowEditModal(false);
     } else {
@@ -78,15 +78,15 @@ const EditTruckModal = ({
                 <input type="text" name="registration" value={formData.registration} onChange={handleChange} />
               </div>
               <div>
-                <label>Make Year: </label>
-                <input type="number" name="makeYear" value={formData.makeYear} onChange={handleChange} />
+                <label>Production Year: </label>
+                <input type="number" name="productionYear" value={formData.productionYear} onChange={handleChange} />
               </div>
               <div>
-                <label>Reservoir Capacity: </label>
+                <label>Tank Capacity: </label>
                 <input
                   type="number"
-                  name="reservoirCapacity"
-                  value={formData.reservoirCapacity}
+                  name="tankCapacity"
+                  value={formData.tankCapacity}
                   onChange={handleChange}
                 />
               </div>

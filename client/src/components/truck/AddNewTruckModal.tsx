@@ -14,8 +14,8 @@ const EditTruckModal = ({
 }) => {
   const [formData, setFormData] = useState({
     registration: '',
-    makeYear: '0',
-    reservoirCapacity: 0,
+    productionYear: '0',
+    tankCapacity: 0,
     horsepower: 0,
   });
   const [open, setOpen] = React.useState(false);
@@ -34,7 +34,7 @@ const EditTruckModal = ({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: null, ...formData }),
+      body: JSON.stringify({ ...formData }),
     });
 
     if (response.ok) {
@@ -71,15 +71,15 @@ const EditTruckModal = ({
                 <input type="text" name="registration" value={formData.registration} onChange={handleChange} />
               </div>
               <div>
-                <label>Make Year: </label>
-                <input type="number" name="makeYear" value={formData.makeYear} onChange={handleChange} />
+                <label>Production Year: </label>
+                <input type="number" name="productionYear" value={formData.productionYear} onChange={handleChange} />
               </div>
               <div>
-                <label>Reservoir Capacity: </label>
+                <label>Tank Capacity: </label>
                 <input
                   type="number"
-                  name="reservoirCapacity"
-                  value={formData.reservoirCapacity}
+                  name="tankCapacity"
+                  value={formData.tankCapacity}
                   onChange={handleChange}
                 />
               </div>

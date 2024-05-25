@@ -5,7 +5,7 @@ import Snackbar from '@mui/material/Snackbar';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddNewTruckModal from '@/components/truck/AddNewTruckModal';
 import EditTruckModal from '@/components/truck/EditTruckModal';
@@ -41,9 +41,9 @@ const EditButton = ({
   );
 };
 
-const DeleteButton = ({ id }: { id: number }) => {
+const DeleteButton = ({ id, onDelete}: { id: number , onDelete: (id: number) => void}) => {
   return (
-    <Button variant="outlined" color="error" onClick={() => console.log(`Delete ${id}`)}>
+    <Button variant="outlined" color="error" onClick={() => onDelete(id) }>
       Delete
     </Button>
   );
@@ -64,12 +64,14 @@ const TruckList = () => {
   const [editTruckId, setEditTruckId] = useState<number | null>(null);
   const [showAddNewModal, setShowAddNewModal] = useState(false);
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'registration', headerName: 'Registration', width: 130 },
     { field: 'productionYear', headerName: 'Make year', type: 'number', width: 80 },
-    { field: 'tankCapacity', headerName: 'Reservoir', type: 'number', width: 90 },
+    { field: 'tankCapacity', headerName: 'Tank', type: 'number', width: 90 },
     { field: 'horsepower', headerName: 'Horsepower', type: 'number', width: 90 },
     {
       field: 'edit',
@@ -87,15 +89,18 @@ const TruckList = () => {
       width: 120,
       renderCell: params => (
         <StyledContainer style={{ alignItems: 'center', width: '100%', height: '100%', margin: '0px' }}>
-          <DeleteButton id={params.row.id} />
+          <DeleteButton id={params.row.id} onDelete={handleDelete} />
         </StyledContainer>
       ),
     },
   ];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Truck>(
     "/api/trucks",
   );
+
+  console.log(data?.length)
 
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
@@ -107,7 +112,31 @@ const TruckList = () => {
       return;
     }
     setShowSuccessSnackbar(false);
+    setShowErrorSnackbar(false);
   };
+
+  const handleDelete = async (id: number) => {
+    const response = await fetch(`/api/trucks/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.ok) {
+      setShowSuccessSnackbar(true)
+    } else {
+      setShowErrorSnackbar(true)
+    }
+  };
+
+  useEffect( () => {
+    setTimeout(() => {
+      if (showSuccessSnackbar == true) {
+        window.location.reload();
+      }
+    }, 1000)
+  }, [showSuccessSnackbar])
 
   return (
     <>
@@ -159,6 +188,11 @@ const TruckList = () => {
       <Snackbar open={showSuccessSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity="success" variant="filled" sx={{ width: '100%' }}>
           Action performed successfully!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={showErrorSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled" sx={{ width: '100%' }}>
+          Action failed!
         </Alert>
       </Snackbar>
     </>
