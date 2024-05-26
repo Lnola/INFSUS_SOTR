@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import Error from '@/components/common/Error';
 import { StyledDataGridContainer } from '@/components/common/styled/StyledDataGridContainer';
 
@@ -23,6 +24,18 @@ const OrderList = ({
     { field: 'trailerRegistration', headerName: 'Trailer Registration', width: 130 },
     { field: 'financer', headerName: 'Financer Name', width: 130 },
     { field: 'status', headerName: 'Status', width: 130 },
+    {
+      field: 'details',
+      headerName: 'Details',
+      width: 120,
+      renderCell: params => (
+        <Link to={`/orders/${params.row.id}`}>
+          <Button variant="contained" color="success">
+            Details
+          </Button>
+        </Link>
+      ),
+    },
     {
       field: 'edit',
       headerName: 'Edit',

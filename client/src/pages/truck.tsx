@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
@@ -42,8 +43,18 @@ const EditButton = ({
 };
 
 const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar, setOnChangeRerender, onChangeRerender }) => {
-  const handleDelete = async (id: number) => {
-    const response = await fetch(`/api/trucks/${id}`, {
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+
+  const resetConfirmDialog = () => {
+    setConfirmDialogOpen(false);
+  };
+
+  const handleDelete = async () => {
+    setConfirmDialogOpen(true);
+  };
+
+  const confirmDelete = async (id: number) => {
+    const response = await fetch(`/api/trailers/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -56,12 +67,30 @@ const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar, setOnC
     } else {
       setShowErrorSnackbar(true);
     }
-  };
 
+    setConfirmDialogOpen(false);
+  };
   return (
-    <Button variant="outlined" color="error" onClick={() => handleDelete(id)}>
-      Delete
-    </Button>
+    <>
+      <Button variant="outlined" color="error" onClick={handleDelete}>
+        Delete
+      </Button>
+      {confirmDialogOpen && (
+        <Dialog open={confirmDialogOpen} onClose={resetConfirmDialog}>
+          <DialogTitle>Delete Truck</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this truck? This action will delete the truck permanently along with the
+              data depending on the truck.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={resetConfirmDialog}>Cancel</Button>
+            <Button onClick={() => confirmDelete(id)}>Continue</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </>
   );
 };
 
@@ -82,7 +111,6 @@ const TruckList = () => {
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
   const [onChangeRerender, setOnChangeRerender] = useState(false);
-
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -106,18 +134,23 @@ const TruckList = () => {
       width: 120,
       renderCell: params => (
         <StyledContainer style={{ alignItems: 'center', width: '100%', height: '100%', margin: '0px' }}>
-          <DeleteButton id={params.row.id} setShowErrorSnackbar={setShowErrorSnackbar} setShowSuccessSnackbar={setShowSuccessSnackbar} setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender}/>
+          <DeleteButton
+            id={params.row.id}
+            setShowErrorSnackbar={setShowErrorSnackbar}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setOnChangeRerender={setOnChangeRerender}
+            onChangeRerender={onChangeRerender}
+          />
         </StyledContainer>
       ),
     },
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { fetch, data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Truck>('/api/trucks');
+  const { fetch, data, count, isLoading, paginationModel, setPaginationModel } = usePagination<Truck>('/api/trucks');
 
   useEffect(() => {
-    fetch()
-  }, [onChangeRerender, fetch])
+    fetch();
+  }, [onChangeRerender, fetch]);
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
@@ -177,7 +210,12 @@ const TruckList = () => {
       )}
       {/* Add new Modal */}
       {showAddNewModal && (
-        <AddNewTruckModal setShowAddNewModal={setShowAddNewModal} setShowSuccessSnackbar={setShowSuccessSnackbar} setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender} />
+        <AddNewTruckModal
+          setShowAddNewModal={setShowAddNewModal}
+          setShowSuccessSnackbar={setShowSuccessSnackbar}
+          setOnChangeRerender={setOnChangeRerender}
+          onChangeRerender={onChangeRerender}
+        />
       )}
 
       <Snackbar open={showSuccessSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>

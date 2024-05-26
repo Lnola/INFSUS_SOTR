@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
@@ -42,7 +43,17 @@ const EditButton = ({
 };
 
 const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar, setOnChangeRerender, onChangeRerender }) => {
-  const handleDelete = async (id: number) => {
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+
+  const resetConfirmDialog = () => {
+    setConfirmDialogOpen(false);
+  };
+
+  const handleDelete = async () => {
+    setConfirmDialogOpen(true);
+  };
+
+  const confirmDelete = async (id: number) => {
     const response = await fetch(`/api/trailers/${id}`, {
       method: 'DELETE',
       headers: {
@@ -56,11 +67,30 @@ const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar, setOnC
     } else {
       setShowErrorSnackbar(true);
     }
+
+    setConfirmDialogOpen(false);
   };
   return (
-    <Button variant="outlined" color="error" onClick={() => handleDelete(id)}>
-      Delete
-    </Button>
+    <>
+      <Button variant="outlined" color="error" onClick={handleDelete}>
+        Delete
+      </Button>
+      {confirmDialogOpen && (
+        <Dialog open={confirmDialogOpen} onClose={resetConfirmDialog}>
+          <DialogTitle>Delete Trailer</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this trailer? This action will delete the trailer permanently along with
+              the data depending on the trailer.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={resetConfirmDialog}>Cancel</Button>
+            <Button onClick={() => confirmDelete(id)}>Continue</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </>
   );
 };
 
@@ -104,18 +134,24 @@ const TrailerList = () => {
       width: 120,
       renderCell: params => (
         <StyledContainer style={{ alignItems: 'center', width: '100%', height: '100%', margin: '0px' }}>
-          <DeleteButton id={params.row.id} setShowErrorSnackbar={setShowErrorSnackbar} setShowSuccessSnackbar={setShowSuccessSnackbar} setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender} />
+          <DeleteButton
+            id={params.row.id}
+            setShowErrorSnackbar={setShowErrorSnackbar}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setOnChangeRerender={setOnChangeRerender}
+            onChangeRerender={onChangeRerender}
+          />
         </StyledContainer>
       ),
     },
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { fetch, data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Trailer>('/api/trailers');
+  const { fetch, data, count, isLoading, paginationModel, setPaginationModel } =
+    usePagination<Trailer>('/api/trailers');
 
   useEffect(() => {
-    fetch()
-  }, [onChangeRerender, fetch])
+    fetch();
+  }, [onChangeRerender, fetch]);
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
@@ -175,7 +211,12 @@ const TrailerList = () => {
       )}
       {/* Add new Modal */}
       {showAddNewModal && (
-        <AddNewTrailerModal setShowAddNewModal={setShowAddNewModal} setShowSuccessSnackbar={setShowSuccessSnackbar}  setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender}/>
+        <AddNewTrailerModal
+          setShowAddNewModal={setShowAddNewModal}
+          setShowSuccessSnackbar={setShowSuccessSnackbar}
+          setOnChangeRerender={setOnChangeRerender}
+          onChangeRerender={onChangeRerender}
+        />
       )}
 
       <Snackbar open={showSuccessSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>

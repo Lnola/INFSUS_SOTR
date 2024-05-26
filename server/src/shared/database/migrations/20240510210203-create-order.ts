@@ -12,13 +12,13 @@ export class CreateOrder extends Migration {
       table.decimal('transport_price').notNullable();
       table.decimal('distance').notNullable();
       table.integer('truck_id').notNullable();
-      table.foreign('truck_id').references('id').inTable('truck');
+      table.foreign('truck_id').references('id').inTable('truck').onDelete('CASCADE');
       table.integer('trailer_id').notNullable();
-      table.foreign('trailer_id').references('id').inTable('trailer');
+      table.foreign('trailer_id').references('id').inTable('trailer').onDelete('CASCADE');
       table.integer('company_id').notNullable();
-      table.foreign('company_id').references('id').inTable('company');
+      table.foreign('company_id').references('id').inTable('company').onDelete('CASCADE');
       table.integer('status_id').notNullable();
-      table.foreign('status_id').references('id').inTable('order_status');
+      table.foreign('status_id').references('id').inTable('order_status').onDelete('CASCADE');
     });
 
     this.addSql(createOrderTable.toQuery());
