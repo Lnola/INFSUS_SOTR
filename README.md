@@ -2,6 +2,23 @@
 
 ## Running the project
 
+### Environment variables
+
+Set the matching env variables by creating a file called `.env` in the `./server` folder.
+You can follow the example set in the `.env.example` file.
+The initial setup is
+
+```
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=infsus_sotr
+DB_USER=infsus_sotr
+DB_PASSWORD=infsus_sotr
+
+```
+
+but you can change that depending on your connection.
+
 ### Requirements
 
 - Node ~v20
