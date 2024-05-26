@@ -1,27 +1,29 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
 
 export class OrderDto {
   @IsNotEmpty()
   @IsNumber()
+  @Min(0)
   transportPrice: number;
 
   @IsNotEmpty()
   @IsNumber()
+  @Min(0)
   distance: number;
 
   @IsNotEmpty()
-  @IsNumber()
-  truckId: number;
+  @IsString()
+  truckRegistration: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  trailerId: number;
+  @IsString()
+  trailerRegistration: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  financerId: number;
+  @IsString()
+  financer: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  statusId: number;
+  @IsString()
+  status: string;
 }
