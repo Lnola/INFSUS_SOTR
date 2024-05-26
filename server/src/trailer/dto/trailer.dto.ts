@@ -1,6 +1,12 @@
-export class TrailerDto {
-  registration: string;
-  productionYear: string;
+import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { TransportVehicleDto } from 'shared/models/transport-vehicle/transport-vehicle.dto';
+
+export class TrailerDto extends TransportVehicleDto {
+  @IsNotEmpty()
+  @IsNumber()
   palletCapacity: number;
-  length: number;
+
+  @IsOptional()
+  @IsNumber()
+  length?: number;
 }
