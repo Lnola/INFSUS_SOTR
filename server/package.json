@@ -13,6 +13,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "start:infrastructure": "docker compose up -d",
     "db:fresh": "mikro-orm migration:fresh --seed",
     "db:migration:create": "mikro-orm migration:create -b",
     "db:migration:down": "mikro-orm migration:down",
