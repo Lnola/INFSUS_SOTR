@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
@@ -42,8 +43,18 @@ const EditButton = ({
 };
 
 const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar, setOnChangeRerender, onChangeRerender }) => {
-  const handleDelete = async (id: number) => {
-    const response = await fetch(`/api/trucks/${id}`, {
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+
+  const resetConfirmDialog = () => {
+    setConfirmDialogOpen(false);
+  };
+
+  const handleDelete = async () => {
+    setConfirmDialogOpen(true);
+  };
+
+  const confirmDelete = async (id: number) => {
+    const response = await fetch(`/api/trailers/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -56,12 +67,30 @@ const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar, setOnC
     } else {
       setShowErrorSnackbar(true);
     }
-  };
 
+    setConfirmDialogOpen(false);
+  };
   return (
-    <Button variant="outlined" color="error" onClick={() => handleDelete(id)}>
-      Delete
-    </Button>
+    <>
+      <Button variant="outlined" color="error" onClick={handleDelete}>
+        Delete
+      </Button>
+      {confirmDialogOpen && (
+        <Dialog open={confirmDialogOpen} onClose={resetConfirmDialog}>
+          <DialogTitle>Delete Truck</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this truck? This action will delete the truck permanently along with the
+              data depending on the truck.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={resetConfirmDialog}>Cancel</Button>
+            <Button onClick={() => confirmDelete(id)}>Continue</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </>
   );
 };
 
