@@ -48,8 +48,9 @@ const EditTruckModal = ({
       setShowSuccessSnackbar(true);
       setShowAddNewModal(false);
     } else {
+      const res = await response.json();
       setSnackbarStatus('error');
-      setSnackbarText('Action was not successful!');
+      setSnackbarText(`Action was not successful! ${res.message}`);
       setOpen(true);
     }
   };
@@ -81,12 +82,7 @@ const EditTruckModal = ({
               </div>
               <div>
                 <label>Tank Capacity: </label>
-                <input
-                  type="number"
-                  name="tankCapacity"
-                  value={formData.tankCapacity}
-                  onChange={handleChange}
-                />
+                <input type="number" name="tankCapacity" value={formData.tankCapacity} onChange={handleChange} />
               </div>
               <div>
                 <label>Horsepower: </label>
