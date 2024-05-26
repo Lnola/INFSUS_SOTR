@@ -85,3 +85,10 @@ Start the client
 ```sh
 $ npm run dev
 ```
+
+### To run the tests
+
+```sh
+$ cd server
+$ npm run test
+```
