@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import HomePage from './pages/home';
 import OrderPage from './pages/order';
 import Driver from '@/pages/driver';
@@ -30,5 +30,9 @@ export const router = createBrowserRouter([
   {
     path: '/orders/:id',
     element: <OrderDetailPage />,
+  },
+  {
+    path: '*',
+    element: <Navigate to="/" replace />,
   },
 ]);
