@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import Pagination, { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { TruckDto } from './dto/truck.dto';
 import { TruckService } from './truck.service';
@@ -18,11 +18,13 @@ export class TruckController {
   }
 
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() truckDto: TruckDto) {
     return this.truckService.create(truckDto);
   }
 
   @Put(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(@Param('id') id: number, @Body() truckDto: TruckDto) {
     return this.truckService.update(id, truckDto);
   }
