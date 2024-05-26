@@ -87,7 +87,7 @@ const OrderAdd = ({ isOpen, setIsOpen, refetchOrders, order }: Props) => {
         toast.error(`Failed! ${error}`);
       }
     }
-  }, [error, wasFetched, setIsOpen, refetchOrders]);
+  }, [error, wasFetched, setIsOpen, refetchOrders, create]);
 
   if (!trucks || !trailers || !companies || !orderStatuses) return null;
   return (
