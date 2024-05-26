@@ -107,6 +107,7 @@ const LogisticsOperationAdd = ({
         label="Date"
         variant="standard"
         type="date"
+        InputLabelProps={{ shrink: true }}
         value={formData.date}
         onChange={handleChange}
       />
