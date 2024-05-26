@@ -5,6 +5,7 @@ import databaseConfig from 'config/database.config';
 import { DriverModule } from 'driver/driver.module';
 import { HealthController } from 'health.controller';
 import { LogisticsOperationModule } from 'logistics-operation/logistics-operation.module';
+import { OrderModule } from 'order/order.module';
 import { DatabaseModule } from 'shared/database/database.module';
 import { TrailerModule } from 'trailer/trailer.module';
 import { TruckModule } from 'truck/truck.module';
@@ -25,6 +26,7 @@ const GlobalConfigModule = ConfigModule.forRoot({
     TrailerModule,
     CompanyModule,
     LogisticsOperationModule,
+    OrderModule,
   ],
   controllers: [HealthController],
 })
