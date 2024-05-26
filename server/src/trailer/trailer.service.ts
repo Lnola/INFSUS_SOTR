@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository, wrap } from '@mikro-orm/postgresql';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { EntityRepository, UniqueConstraintViolationException, wrap } from '@mikro-orm/postgresql';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { TrailerDto } from './dto/trailer.dto';
 import Trailer from './entities/trailer.entity';
@@ -28,14 +28,21 @@ export class TrailerService {
   }
 
   async create(trailerDto: TrailerDto) {
-    const trailer = new Trailer(
-      trailerDto.registration,
-      trailerDto.productionYear,
-      Number(trailerDto.palletCapacity),
-      Number(trailerDto.length),
-    );
-    await this.em.persist(trailer).flush();
-    return trailer.id;
+    try {
+      const trailer = new Trailer(
+        trailerDto.registration,
+        trailerDto.productionYear,
+        Number(trailerDto.palletCapacity),
+        Number(trailerDto.length),
+      );
+      await this.em.persist(trailer).flush();
+      return trailer.id;
+    } catch (error) {
+      if (error instanceof UniqueConstraintViolationException)
+        throw new BadRequestException('Trailer with this registration already exists');
+
+      throw error;
+    }
   }
 
   async update(id: number, trailerDto: TrailerDto) {
