@@ -14,6 +14,23 @@ import Order, { OrderStatus } from '@/models/order';
 import Trailer from '@/models/trailer';
 import Truck from '@/models/truck';
 
+const validate = (formData, setFormData) => {
+  let isValid = true;
+  if (typeof formData.transportPrice === 'string') {
+    setFormData(prev => ({ ...prev, transportPrice: +formData.transportPrice }));
+  } else if (formData.transportPrice < 0) {
+    isValid = false;
+  }
+
+  if (typeof formData.distance === 'string') {
+    setFormData(prev => ({ ...prev, distance: +formData.distance }));
+  } else if (formData.distance < 0) {
+    isValid = false;
+  }
+
+  return isValid;
+};
+
 const initialFormData = {
   transportPrice: '',
   distance: '',
@@ -54,17 +71,18 @@ const OrderAdd = ({ isOpen, setIsOpen, refetchOrders, order }: Props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!event.currentTarget.reportValidity()) return;
-    await create();
+    if (!event.currentTarget.reportValidity() || !validate(formData, setFormData)) return;
     setWasFetched(true);
   };
 
   useEffect(() => {
     if (wasFetched) {
       if (!error) {
-        setIsOpen(false);
-        refetchOrders();
-        toast.success('Success!');
+        create().then(() => {
+          setIsOpen(false);
+          refetchOrders();
+          toast.success('Success!');
+        });
       } else {
         toast.error(`Failed! ${error}`);
       }
