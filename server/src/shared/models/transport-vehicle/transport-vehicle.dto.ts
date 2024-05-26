@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { IsNotEmpty, IsNumberString, IsOptional, MinLength } from 'class-validator';
 import { IsRegistration } from 'shared/validators/is-registration.validator';
 
 export class TransportVehicleDto {
@@ -7,8 +7,7 @@ export class TransportVehicleDto {
   registration: string;
 
   @IsOptional()
-  @IsNumber()
-  @Min(1900)
-  @Max(new Date().getFullYear() + 1)
+  @IsNumberString()
+  @MinLength(4)
   productionYear?: string;
 }
