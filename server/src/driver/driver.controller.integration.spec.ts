@@ -9,7 +9,7 @@ import { DriverController } from './driver.controller';
 import { DriverService } from './driver.service';
 import Driver from './entities/driver.entity';
 
-describe('DriverController (e2e)', () => {
+describe('Integration DriverController (e2e)', () => {
   let app: INestApplication;
   let em: EntityManager;
 

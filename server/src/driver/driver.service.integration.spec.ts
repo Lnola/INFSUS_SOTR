@@ -15,7 +15,7 @@ const paginationParams: PaginationParams = {
   },
 };
 
-describe('DriverService', () => {
+describe('Integration DriverService', () => {
   let driverService: DriverService;
   let module: TestingModule;
   let em: EntityManager;
