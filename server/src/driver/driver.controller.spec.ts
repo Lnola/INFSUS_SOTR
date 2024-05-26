@@ -20,7 +20,7 @@ describe('DriverController', () => {
     id: 1,
     firstName: 'John',
     lastName: 'Doe',
-    contactNumber: '0981953422',
+    contactNumber: '0981943462',
     employmentStartDate: new Date(),
     employmentEndDate: new Date(),
   };
