@@ -14,7 +14,7 @@ export class CreateCompanyLocation extends Migration {
       table.string('country').notNullable();
       table.string('name').notNullable().unique();
       table.integer('company_id').notNullable();
-      table.foreign('company_id').references('id').inTable('company');
+      table.foreign('company_id').references('id').inTable('company').onDelete('CASCADE');
     });
 
     this.addSql(createCompanyLocationTable.toQuery());

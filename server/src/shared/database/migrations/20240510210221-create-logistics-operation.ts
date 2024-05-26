@@ -12,9 +12,9 @@ export class CreateLogisticsOperation extends Migration {
       table.boolean('is_completed').notNullable();
       table.text('note');
       table.integer('company_location_id').notNullable();
-      table.foreign('company_location_id').references('id').inTable('company_location');
+      table.foreign('company_location_id').references('id').inTable('company_location').onDelete('CASCADE');
       table.integer('type_id').notNullable();
-      table.foreign('type_id').references('id').inTable('logistics_operation_type');
+      table.foreign('type_id').references('id').inTable('logistics_operation_type').onDelete('CASCADE');
       table.integer('order_id').notNullable();
       table.foreign('order_id').references('id').inTable('order').onDelete('CASCADE');
     });

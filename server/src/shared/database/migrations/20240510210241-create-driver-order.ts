@@ -9,9 +9,9 @@ export class CreateDriverOrder extends Migration {
     const createDriverOrderTable = knex.schema.createTable(TABLE_NAME, table => {
       table.increments('id');
       table.integer('driver_id').notNullable();
-      table.foreign('driver_id').references('id').inTable('driver').onDelete('CASCADE');
+      table.foreign('driver_id').references('id').inTable('driver').onDelete('CASCADE').onDelete('CASCADE');
       table.integer('order_id').notNullable();
-      table.foreign('order_id').references('id').inTable('order').onDelete('CASCADE');
+      table.foreign('order_id').references('id').inTable('order').onDelete('CASCADE').onDelete('CASCADE');
     });
 
     this.addSql(createDriverOrderTable.toQuery());
