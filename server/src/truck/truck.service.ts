@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository, wrap } from '@mikro-orm/postgresql';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { EntityRepository, UniqueConstraintViolationException, wrap } from '@mikro-orm/postgresql';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { TruckDto } from './dto/truck.dto';
 import Truck from './entities/truck.entity';
@@ -28,16 +28,24 @@ export class TruckService {
   }
 
   async create(truckDto: TruckDto) {
-    const truck = new Truck(
-      truckDto.registration,
-      truckDto.productionYear,
-      Number(truckDto.tankCapacity),
-      Number(truckDto.horsepower),
-    );
-    await this.em.persist(truck).flush();
-    return truck.id;
+    try {
+      const truck = new Truck(
+        truckDto.registration,
+        truckDto.productionYear,
+        Number(truckDto.tankCapacity),
+        Number(truckDto.horsepower),
+      );
+      await this.em.persist(truck).flush();
+      return truck.id;
+    } catch (error) {
+      if (error instanceof UniqueConstraintViolationException)
+        throw new BadRequestException('Driver with this contact number already exists!');
+
+      throw error;
+    }
   }
 
+  // TODO: implement similar to other implementations
   async update(id: number, truckDto: TruckDto) {
     const savedTruck = await this.truckRepository.findOne(id);
     if (!savedTruck) {
