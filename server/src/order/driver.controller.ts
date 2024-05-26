@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Delete, Get, Param } from '@nestjs/common';
 import Pagination, { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { OrderService } from './driver.service';
 
@@ -9,5 +9,10 @@ export class OrderController {
   @Get()
   async find(@Pagination() pagination: PaginationParams) {
     return this.orderService.find(pagination);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.orderService.delete(id);
   }
 }
