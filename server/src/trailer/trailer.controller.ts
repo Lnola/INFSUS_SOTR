@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import Pagination, { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { TrailerDto } from './dto/trailer.dto';
 import { TrailerService } from './trailer.service';
@@ -18,11 +18,13 @@ export class TrailerController {
   }
 
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() trailerDto: TrailerDto) {
     return this.trailerService.create(trailerDto);
   }
 
   @Put(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(@Param('id') id: number, @Body() trailerDto: TrailerDto) {
     return this.trailerService.update(id, trailerDto);
   }
