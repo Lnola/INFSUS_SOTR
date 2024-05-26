@@ -1,4 +1,5 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
+import Layout from './components/common/Layout';
 import HomePage from './pages/home';
 import OrderPage from './pages/order';
 import Driver from '@/pages/driver';
@@ -9,30 +10,36 @@ import TruckList from '@/pages/truck';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/drivers',
-    element: <Driver />,
-  },
-  {
-    path: '/trucks',
-    element: <TruckList />,
-  },
-  {
-    path: '/trailers',
-    element: <TrailerList />,
-  },
-  {
-    path: '/orders',
-    element: <OrderPage />,
-  },
-  {
-    path: '/orders/:id',
-    element: <OrderDetailPage />,
-  },
-  {
-    path: '*',
-    element: <Navigate to="/" replace />,
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
+      {
+        path: '/drivers',
+        element: <Driver />,
+      },
+      {
+        path: '/trucks',
+        element: <TruckList />,
+      },
+      {
+        path: '/trailers',
+        element: <TrailerList />,
+      },
+      {
+        path: '/orders',
+        element: <OrderPage />,
+      },
+      {
+        path: '/orders/:id',
+        element: <OrderDetailPage />,
+      },
+      {
+        path: '*',
+        element: <Navigate to="/" replace />,
+      },
+    ],
   },
 ]);
