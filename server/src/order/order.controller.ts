@@ -17,6 +17,11 @@ export class OrderController {
     return this.orderService.findStatuses();
   }
 
+  @Get(':id')
+  async findOneOrder(@Param('id') id: string) {
+    return this.orderService.findOne(+id);
+  }
+
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body('params') orderDto: OrderDto) {

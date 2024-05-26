@@ -33,6 +33,10 @@ export class OrderService {
     return { items, count };
   }
 
+  findOne(id: number) {
+    return this.orderRepository.findOne(id);
+  }
+
   async findStatuses() {
     return await this.orderStatusRepository.findAll();
   }
