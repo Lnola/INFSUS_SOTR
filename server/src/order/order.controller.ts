@@ -12,6 +12,11 @@ export class OrderController {
     return this.orderService.find(pagination);
   }
 
+  @Get('statuses')
+  async getStatuses() {
+    return this.orderService.findStatuses();
+  }
+
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body('params') orderDto: OrderDto) {
