@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useMemo } from 'react';
 import Error from '@/components/common/Error';
 import { StyledDataGridContainer } from '@/components/common/styled/StyledDataGridContainer';
 
@@ -15,23 +16,13 @@ const OrderList = ({
 }) => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'firstName', headerName: 'First name', width: 130 },
-    { field: 'lastName', headerName: 'Last name', width: 130 },
-    { field: 'contactNumber', headerName: 'Contact Number', width: 130 },
-    {
-      field: 'employmentStartDate',
-      headerName: 'Employment Start Date',
-      width: 130,
-      type: 'date',
-      valueFormatter: value => new Date(value).toLocaleDateString(),
-    },
-    {
-      field: 'employmentEndDate',
-      headerName: 'Employment End Date',
-      width: 130,
-      type: 'date',
-      valueFormatter: value => (value ? new Date(value).toLocaleDateString() : null),
-    },
+    { field: 'serialNumber', headerName: 'Serial Number', width: 130 },
+    { field: 'transportPrice', headerName: 'Transport Price', width: 130 },
+    { field: 'distance', headerName: 'Distance', width: 130 },
+    { field: 'truckRegistration', headerName: 'Truck Registration', width: 130 },
+    { field: 'trailerRegistration', headerName: 'Trailer Registration', width: 130 },
+    { field: 'financer', headerName: 'Financer Name', width: 130 },
+    { field: 'status', headerName: 'Status', width: 130 },
     {
       field: 'edit',
       headerName: 'Edit',
@@ -54,12 +45,24 @@ const OrderList = ({
     },
   ];
 
+  const mappedData = useMemo(
+    () =>
+      data?.map(order => ({
+        ...order,
+        truckRegistration: order.truck.registration,
+        trailerRegistration: order.trailer.registration,
+        financer: order.financer.name,
+        status: order.status.name,
+      })),
+    [data],
+  );
+
   if (error) return <Error error={error || 'Missing data'} />;
   return (
     <StyledDataGridContainer>
       <DataGrid
         columns={columns}
-        rows={data || []}
+        rows={mappedData || []}
         rowCount={count}
         loading={isLoading}
         pageSizeOptions={[1, 5, 10]}

@@ -6,6 +6,9 @@ export const urls = {
   get() {
     return this.base;
   },
+  getOrderStatuses() {
+    return urljoin(this.base, 'statuses');
+  },
   create() {
     return this.base;
   },

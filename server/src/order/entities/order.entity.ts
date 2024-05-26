@@ -5,6 +5,7 @@ import LogisticsOperation from 'logistics-operation/entities/logistics-operation
 import BaseEntity from 'shared/database/base.entity';
 import Trailer from 'trailer/entities/trailer.entity';
 import Truck from 'truck/entities/truck.entity';
+import { v4 as uuid } from 'uuid';
 import OrderStatus from './order-status.entity';
 
 @Entity({ tableName: 'order' })
@@ -19,16 +20,16 @@ class Order extends BaseEntity {
   @Property()
   distance: number;
 
-  @ManyToOne({ entity: () => Truck, fieldName: 'truck_id' })
+  @ManyToOne({ entity: () => Truck, fieldName: 'truck_id', eager: true })
   truck: Truck;
 
-  @ManyToOne({ entity: () => Trailer, fieldName: 'trailer_id' })
+  @ManyToOne({ entity: () => Trailer, fieldName: 'trailer_id', eager: true })
   trailer: Trailer;
 
-  @ManyToOne({ entity: () => Company, fieldName: 'company_id' })
+  @ManyToOne({ entity: () => Company, fieldName: 'company_id', eager: true })
   financer: Company;
 
-  @ManyToOne({ entity: () => OrderStatus, fieldName: 'status_id' })
+  @ManyToOne({ entity: () => OrderStatus, fieldName: 'status_id', eager: true })
   status: OrderStatus;
 
   // TODO: decide if it needs to be private and eager
@@ -50,7 +51,6 @@ class Order extends BaseEntity {
   _logisticsOperations = new Collection<LogisticsOperation>(this);
 
   constructor(
-    serialNumber: string,
     transportPrice: number,
     distance: number,
     truck: Truck,
@@ -59,7 +59,7 @@ class Order extends BaseEntity {
     status: OrderStatus,
   ) {
     super();
-    this.serialNumber = serialNumber;
+    this.serialNumber = uuid();
     this.transportPrice = transportPrice;
     this.distance = distance;
     this.truck = truck;
