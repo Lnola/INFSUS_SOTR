@@ -34,6 +34,9 @@ describe('Integration DriverService', () => {
   });
 
   afterEach(async () => {
+    const orm = module.get(MikroORM);
+    const generator = orm.getSchemaGenerator();
+    await generator.clearDatabase();
     await module.close();
   });
 

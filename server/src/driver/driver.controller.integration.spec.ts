@@ -32,6 +32,9 @@ describe('Integration DriverController (e2e)', () => {
   });
 
   afterEach(async () => {
+    const orm = app.get(MikroORM);
+    const generator = orm.getSchemaGenerator();
+    await generator.clearDatabase();
     await app.close();
   });
 
