@@ -32,8 +32,8 @@ export class TrailerService {
       const trailer = new Trailer(
         trailerDto.registration,
         trailerDto.productionYear,
-        Number(trailerDto.palletCapacity),
-        Number(trailerDto.length),
+        trailerDto.palletCapacity,
+        trailerDto.length,
       );
       await this.em.persist(trailer).flush();
       return trailer.id;
