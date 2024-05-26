@@ -9,7 +9,7 @@ describe('DriverController', () => {
   let driverService: DriverService;
 
   const paginationParams: PaginationParams = {
-    page: 1,
+    page: 0,
     pageSize: 10,
     extractParams() {
       return { page: +this.page, pageSize: +this.pageSize };
