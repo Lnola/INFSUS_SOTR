@@ -83,7 +83,6 @@ const TruckList = () => {
   const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
   const [onChangeRerender, setOnChangeRerender] = useState(false);
 
-
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'registration', headerName: 'Registration', width: 130 },
@@ -106,18 +105,23 @@ const TruckList = () => {
       width: 120,
       renderCell: params => (
         <StyledContainer style={{ alignItems: 'center', width: '100%', height: '100%', margin: '0px' }}>
-          <DeleteButton id={params.row.id} setShowErrorSnackbar={setShowErrorSnackbar} setShowSuccessSnackbar={setShowSuccessSnackbar} setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender}/>
+          <DeleteButton
+            id={params.row.id}
+            setShowErrorSnackbar={setShowErrorSnackbar}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setOnChangeRerender={setOnChangeRerender}
+            onChangeRerender={onChangeRerender}
+          />
         </StyledContainer>
       ),
     },
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { fetch, data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Truck>('/api/trucks');
+  const { fetch, data, count, isLoading, paginationModel, setPaginationModel } = usePagination<Truck>('/api/trucks');
 
   useEffect(() => {
-    fetch()
-  }, [onChangeRerender, fetch])
+    fetch();
+  }, [onChangeRerender, fetch]);
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
@@ -177,7 +181,12 @@ const TruckList = () => {
       )}
       {/* Add new Modal */}
       {showAddNewModal && (
-        <AddNewTruckModal setShowAddNewModal={setShowAddNewModal} setShowSuccessSnackbar={setShowSuccessSnackbar} setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender} />
+        <AddNewTruckModal
+          setShowAddNewModal={setShowAddNewModal}
+          setShowSuccessSnackbar={setShowSuccessSnackbar}
+          setOnChangeRerender={setOnChangeRerender}
+          onChangeRerender={onChangeRerender}
+        />
       )}
 
       <Snackbar open={showSuccessSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>

@@ -104,18 +104,24 @@ const TrailerList = () => {
       width: 120,
       renderCell: params => (
         <StyledContainer style={{ alignItems: 'center', width: '100%', height: '100%', margin: '0px' }}>
-          <DeleteButton id={params.row.id} setShowErrorSnackbar={setShowErrorSnackbar} setShowSuccessSnackbar={setShowSuccessSnackbar} setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender} />
+          <DeleteButton
+            id={params.row.id}
+            setShowErrorSnackbar={setShowErrorSnackbar}
+            setShowSuccessSnackbar={setShowSuccessSnackbar}
+            setOnChangeRerender={setOnChangeRerender}
+            onChangeRerender={onChangeRerender}
+          />
         </StyledContainer>
       ),
     },
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { fetch, data, count, isLoading, error, paginationModel, setPaginationModel } = usePagination<Trailer>('/api/trailers');
+  const { fetch, data, count, isLoading, paginationModel, setPaginationModel } =
+    usePagination<Trailer>('/api/trailers');
 
   useEffect(() => {
-    fetch()
-  }, [onChangeRerender, fetch])
+    fetch();
+  }, [onChangeRerender, fetch]);
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     setAlignment(newAlignment);
@@ -175,7 +181,12 @@ const TrailerList = () => {
       )}
       {/* Add new Modal */}
       {showAddNewModal && (
-        <AddNewTrailerModal setShowAddNewModal={setShowAddNewModal} setShowSuccessSnackbar={setShowSuccessSnackbar}  setOnChangeRerender={setOnChangeRerender} onChangeRerender={onChangeRerender}/>
+        <AddNewTrailerModal
+          setShowAddNewModal={setShowAddNewModal}
+          setShowSuccessSnackbar={setShowSuccessSnackbar}
+          setOnChangeRerender={setOnChangeRerender}
+          onChangeRerender={onChangeRerender}
+        />
       )}
 
       <Snackbar open={showSuccessSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
