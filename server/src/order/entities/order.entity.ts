@@ -5,6 +5,7 @@ import LogisticsOperation from 'logistics-operation/entities/logistics-operation
 import BaseEntity from 'shared/database/base.entity';
 import Trailer from 'trailer/entities/trailer.entity';
 import Truck from 'truck/entities/truck.entity';
+import { v4 as uuid } from 'uuid';
 import OrderStatus from './order-status.entity';
 
 @Entity({ tableName: 'order' })
@@ -50,7 +51,6 @@ class Order extends BaseEntity {
   _logisticsOperations = new Collection<LogisticsOperation>(this);
 
   constructor(
-    serialNumber: string,
     transportPrice: number,
     distance: number,
     truck: Truck,
@@ -59,7 +59,7 @@ class Order extends BaseEntity {
     status: OrderStatus,
   ) {
     super();
-    this.serialNumber = serialNumber;
+    this.serialNumber = uuid();
     this.transportPrice = transportPrice;
     this.distance = distance;
     this.truck = truck;
