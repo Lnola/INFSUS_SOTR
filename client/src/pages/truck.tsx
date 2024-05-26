@@ -54,7 +54,7 @@ const DeleteButton = ({ id, setShowSuccessSnackbar, setShowErrorSnackbar, setOnC
   };
 
   const confirmDelete = async (id: number) => {
-    const response = await fetch(`/api/trailers/${id}`, {
+    const response = await fetch(`/api/trucks/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
