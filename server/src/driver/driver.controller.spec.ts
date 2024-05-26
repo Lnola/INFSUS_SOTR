@@ -16,7 +16,7 @@ describe('DriverController', () => {
     },
   };
 
-  const mockUser = {
+  const mockDriver = {
     id: 1,
     firstName: 'John',
     lastName: 'Doe',
@@ -26,9 +26,9 @@ describe('DriverController', () => {
   };
 
   const mockDriverService = {
-    find: jest.fn().mockResolvedValue([mockUser]),
-    create: jest.fn().mockResolvedValue(mockUser),
-    update: jest.fn().mockResolvedValue(mockUser),
+    find: jest.fn().mockResolvedValue([mockDriver]),
+    create: jest.fn().mockResolvedValue(mockDriver),
+    update: jest.fn().mockResolvedValue(mockDriver),
     delete: jest.fn(),
   };
 
@@ -52,17 +52,17 @@ describe('DriverController', () => {
   });
 
   it('should return an array of drivers', async () => {
-    expect(await driverController.find(paginationParams)).toStrictEqual([mockUser]);
+    expect(await driverController.find(paginationParams)).toStrictEqual([mockDriver]);
     expect(driverService.find).toHaveBeenCalledWith(paginationParams);
   });
 
   it('should create a driver', async () => {
     const createDriverDto: CreateDriverDto = {
-      firstName: mockUser.firstName,
-      lastName: mockUser.lastName,
-      contactNumber: mockUser.contactNumber,
-      employmentStartDate: mockUser.employmentStartDate,
-      employmentEndDate: mockUser.employmentEndDate,
+      firstName: mockDriver.firstName,
+      lastName: mockDriver.lastName,
+      contactNumber: mockDriver.contactNumber,
+      employmentStartDate: mockDriver.employmentStartDate,
+      employmentEndDate: mockDriver.employmentEndDate,
     };
 
     expect(await driverController.create(createDriverDto)).toStrictEqual({ ...createDriverDto, id: 1 });
@@ -71,11 +71,11 @@ describe('DriverController', () => {
 
   it('should update a driver', async () => {
     const updateDriverDto: CreateDriverDto = {
-      firstName: mockUser.firstName,
-      lastName: mockUser.lastName,
-      contactNumber: mockUser.contactNumber,
-      employmentStartDate: mockUser.employmentStartDate,
-      employmentEndDate: mockUser.employmentEndDate,
+      firstName: mockDriver.firstName,
+      lastName: mockDriver.lastName,
+      contactNumber: mockDriver.contactNumber,
+      employmentStartDate: mockDriver.employmentStartDate,
+      employmentEndDate: mockDriver.employmentEndDate,
     };
 
     expect(await driverController.update(1, updateDriverDto)).toStrictEqual({ ...updateDriverDto, id: 1 });
