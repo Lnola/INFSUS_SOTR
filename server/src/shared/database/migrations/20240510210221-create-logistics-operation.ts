@@ -16,7 +16,7 @@ export class CreateLogisticsOperation extends Migration {
       table.integer('type_id').notNullable();
       table.foreign('type_id').references('id').inTable('logistics_operation_type');
       table.integer('order_id').notNullable();
-      table.foreign('order_id').references('id').inTable('order');
+      table.foreign('order_id').references('id').inTable('order').onDelete('CASCADE');
     });
 
     this.addSql(createLogisticsOperationTable.toQuery());
