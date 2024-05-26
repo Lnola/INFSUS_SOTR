@@ -48,8 +48,9 @@ const EditTrailerModal = ({
       setShowSuccessSnackbar(true);
       setShowAddNewModal(false);
     } else {
+      const res = await response.json();
       setSnackbarStatus('error');
-      setSnackbarText('Action was not successful!');
+      setSnackbarText(`Action was not successful! ${res.message}`);
       setOpen(true);
     }
   };
@@ -81,12 +82,7 @@ const EditTrailerModal = ({
               </div>
               <div>
                 <label>Pallet Capacity: </label>
-                <input
-                  type="number"
-                  name="palletCapacity"
-                  value={formData.palletCapacity}
-                  onChange={handleChange}
-                />
+                <input type="number" name="palletCapacity" value={formData.palletCapacity} onChange={handleChange} />
               </div>
               <div>
                 <label>Length: </label>

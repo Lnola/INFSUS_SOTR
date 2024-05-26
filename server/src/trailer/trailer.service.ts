@@ -1,9 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository, wrap } from '@mikro-orm/postgresql';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { EntityRepository, UniqueConstraintViolationException, wrap } from '@mikro-orm/postgresql';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationParams } from 'shared/decorators/pagination.decorator';
+import { TrailerDto } from './dto/trailer.dto';
 import Trailer from './entities/trailer.entity';
-import { TrailerDto } from './trailer.dto';
 
 @Injectable()
 export class TrailerService {
@@ -12,7 +12,7 @@ export class TrailerService {
     private trailerRepository: EntityRepository<Trailer>,
   ) {}
 
-  private em = this.trailerRepository.getEntityManager()
+  private em = this.trailerRepository.getEntityManager();
 
   async find({ page, pageSize }: PaginationParams) {
     const paginationOptions = {
@@ -27,19 +27,26 @@ export class TrailerService {
     return this.trailerRepository.findOne(id);
   }
 
-  async create(trailerDto: TrailerDto){
-    const trailer = new Trailer(
-      trailerDto.registration,
-      trailerDto.productionYear,
-      Number(trailerDto.palletCapacity),
-      Number(trailerDto.length),
-    )
-    await this.em.persist(trailer).flush()
-    return trailer.id
+  async create(trailerDto: TrailerDto) {
+    try {
+      const trailer = new Trailer(
+        trailerDto.registration,
+        trailerDto.productionYear,
+        trailerDto.palletCapacity,
+        trailerDto.length,
+      );
+      await this.em.persist(trailer).flush();
+      return trailer.id;
+    } catch (error) {
+      if (error instanceof UniqueConstraintViolationException)
+        throw new BadRequestException('Trailer with this registration already exists');
+
+      throw error;
+    }
   }
 
-  async update(id: number, trailerDto: TrailerDto){
-    const savedTrailer = await this.trailerRepository.findOne(id)
+  async update(id: number, trailerDto: TrailerDto) {
+    const savedTrailer = await this.trailerRepository.findOne(id);
     if (!savedTrailer) {
       throw new NotFoundException(`Trailer with ID ${id} not found`);
     }
@@ -48,11 +55,11 @@ export class TrailerService {
       trailerDto.productionYear,
       Number(trailerDto.palletCapacity),
       Number(trailerDto.length),
-    )
-    wrap(savedTrailer).assign(trailer)
-    await this.em.flush()
+    );
+    wrap(savedTrailer).assign(trailer);
+    await this.em.flush();
 
-    return id
+    return id;
   }
 
   async remove(id: number) {
@@ -61,7 +68,6 @@ export class TrailerService {
       throw new NotFoundException(`Trailer with ID ${id} not found`);
     }
     await this.em.removeAndFlush(trailer);
-    return id
+    return id;
   }
 }
-
