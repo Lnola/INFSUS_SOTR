@@ -43,8 +43,8 @@ describe('Integration DriverService', () => {
 
   it('should return paginated drivers', async () => {
     const mockDrivers = [
-      new Driver('John', 'Doe', '1234567890', new Date(), null),
-      new Driver('Jane', 'Doe', '1234567891', new Date(), new Date()),
+      new Driver('John', 'Doe', '9234567890', new Date(), null),
+      new Driver('Jane', 'Doe', '4234567891', new Date(), new Date()),
     ];
     await em.persistAndFlush(mockDrivers);
 
