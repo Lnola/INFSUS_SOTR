@@ -1,7 +1,6 @@
-import { Entity, Property, Unique } from '@mikro-orm/core';
+import { Property, Unique } from '@mikro-orm/core';
 import BaseEntity from 'shared/database/base.entity';
 
-@Entity()
 class TransportVehicle extends BaseEntity {
   @Property()
   @Unique()
