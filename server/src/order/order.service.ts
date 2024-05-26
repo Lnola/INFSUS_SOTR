@@ -33,15 +33,19 @@ export class OrderService {
     return { items, count };
   }
 
+  async findStatuses() {
+    return await this.orderStatusRepository.findAll();
+  }
+
   async create(orderDto: OrderDto) {
     try {
-      const truck = await this.truckRepository.findOne(orderDto.truckId);
+      const truck = await this.truckRepository.findOne({ registration: orderDto.truckRegistration });
       if (!truck) throw new NotFoundException('Truck not found!');
-      const trailer = await this.trailerRepository.findOne(orderDto.trailerId);
+      const trailer = await this.trailerRepository.findOne({ registration: orderDto.trailerRegistration });
       if (!trailer) throw new NotFoundException('Trailer not found!');
-      const financer = await this.companyRepository.findOne(orderDto.financerId);
+      const financer = await this.companyRepository.findOne({ name: orderDto.financer });
       if (!financer) throw new NotFoundException('Financer not found!');
-      const status = await this.orderStatusRepository.findOne(orderDto.statusId);
+      const status = await this.orderStatusRepository.findOne({ name: orderDto.status });
       if (!status) throw new NotFoundException('Status not found!');
       const order = new Order(orderDto.transportPrice, orderDto.distance, truck, trailer, financer, status);
       await this.orderRepository.getEntityManager().persistAndFlush(order);
@@ -56,13 +60,13 @@ export class OrderService {
   async update(id: number, orderDto: OrderDto) {
     const order = await this.orderRepository.findOne(id);
     if (!order) throw new NotFoundException('Order not found!');
-    const truck = await this.truckRepository.findOne(orderDto.truckId);
+    const truck = await this.truckRepository.findOne({ registration: orderDto.truckRegistration });
     if (!truck) throw new NotFoundException('Truck not found!');
-    const trailer = await this.trailerRepository.findOne(orderDto.trailerId);
+    const trailer = await this.trailerRepository.findOne({ registration: orderDto.trailerRegistration });
     if (!trailer) throw new NotFoundException('Trailer not found!');
-    const financer = await this.companyRepository.findOne(orderDto.financerId);
+    const financer = await this.companyRepository.findOne({ name: orderDto.financer });
     if (!financer) throw new NotFoundException('Financer not found!');
-    const status = await this.orderStatusRepository.findOne(orderDto.statusId);
+    const status = await this.orderStatusRepository.findOne({ name: orderDto.status });
     if (!status) throw new NotFoundException('Status not found!');
     order.transportPrice = orderDto.transportPrice;
     order.distance = orderDto.distance;
