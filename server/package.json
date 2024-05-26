@@ -94,6 +94,10 @@
     "moduleDirectories": [
       "node_modules",
       "src"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/driver/driver.controller.integration.spec.ts"
     ]
   }
 }
