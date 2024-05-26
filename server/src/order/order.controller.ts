@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import Pagination, { PaginationParams } from 'shared/decorators/pagination.decorator';
 import { OrderDto } from './dto/order.dto';
 import { OrderService } from './order.service';
@@ -18,11 +18,11 @@ export class OrderController {
     return this.orderService.create(orderDto);
   }
 
-  // @Put(':id')
-  // @UsePipes(new ValidationPipe({ transform: true }))
-  // update(@Param('id') id: number, @Body('params') orderDto: OrderDto) {
-  //   return this.orderService.update(id, orderDto);
-  // }
+  @Put(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  update(@Param('id') id: number, @Body('params') orderDto: OrderDto) {
+    return this.orderService.update(id, orderDto);
+  }
 
   @Delete(':id')
   delete(@Param('id') id: number) {

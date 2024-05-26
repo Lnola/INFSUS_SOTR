@@ -53,12 +53,25 @@ export class OrderService {
     }
   }
 
-  // async update(id: number, orderDto: OrderDto) {
-  //   const order = await this.orderRepository.findOne(id);
-  //   if (!order) throw new NotFoundException('Order not found!');
-  //   // order.firstName = orderDto.firstName;
-  //   return await this.orderRepository.getEntityManager().persistAndFlush(order);
-  // }
+  async update(id: number, orderDto: OrderDto) {
+    const order = await this.orderRepository.findOne(id);
+    if (!order) throw new NotFoundException('Order not found!');
+    const truck = await this.truckRepository.findOne(orderDto.truckId);
+    if (!truck) throw new NotFoundException('Truck not found!');
+    const trailer = await this.trailerRepository.findOne(orderDto.trailerId);
+    if (!trailer) throw new NotFoundException('Trailer not found!');
+    const financer = await this.companyRepository.findOne(orderDto.financerId);
+    if (!financer) throw new NotFoundException('Financer not found!');
+    const status = await this.orderStatusRepository.findOne(orderDto.statusId);
+    if (!status) throw new NotFoundException('Status not found!');
+    order.transportPrice = orderDto.transportPrice;
+    order.distance = orderDto.distance;
+    order.truck = truck;
+    order.trailer = trailer;
+    order.financer = financer;
+    order.status = status;
+    return await this.orderRepository.getEntityManager().persistAndFlush(order);
+  }
 
   async delete(id: number) {
     const order = await this.orderRepository.findOne(id);
